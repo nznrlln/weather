@@ -103,10 +103,22 @@ final class CoreDataHelper {
         if (0...299).contains(weatherCode) {
             return UIImage(named: "thunder") ?? UIImage()
         }
-//        else if (300...520, 522...620).con
-//        if weatherCode > 900 {
-//            return UIImage()
-//        }
+        if (300...520).contains(weatherCode) || (522...620).contains(weatherCode) || weatherCode == 900 {
+            return UIImage(named: "rain") ?? UIImage()
+        }
+        if weatherCode == 800 {
+            return UIImage(named: "sun") ?? UIImage()
+        }
+        if (801...803).contains(weatherCode) {
+            return UIImage(named: "sunAndClouds") ?? UIImage()
+        }
+        if weatherCode == 521 || weatherCode == 621 {
+            return UIImage(named: "sunAndRain") ?? UIImage()
+        }
+        if (700...799).contains(weatherCode) || weatherCode == 804 {
+            return UIImage(named: "cloudy") ?? UIImage()
+        }
+        
         return UIImage()
     }
 

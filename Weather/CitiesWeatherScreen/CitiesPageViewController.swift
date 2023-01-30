@@ -44,6 +44,13 @@ class CitiesPageViewController: UIPageViewController {
         return button
     }()
 
+    private let noCityView: NoCityView = {
+        let view = NoCityView()
+        view.toAutoLayout()
+
+        return view
+    }()
+
     override init(
         transitionStyle style: UIPageViewController.TransitionStyle,
         navigationOrientation: UIPageViewController.NavigationOrientation,
@@ -75,11 +82,11 @@ class CitiesPageViewController: UIPageViewController {
 
     private func viewInitialSettings() {
         view.backgroundColor = UIColor(named: "MainAccentColor")
-
-        updateAddedCities()
-        self.setViewControllers([addedCitiesVC[0]], direction: .forward, animated: true)
+//        view.backgroundColor = .white
 
         setupNavigationBar()
+        setupSubviews()
+        setupSubviewsLayout()
     }
 
     private func setupNavigationBar() {
@@ -89,15 +96,37 @@ class CitiesPageViewController: UIPageViewController {
         self.navigationItem.rightBarButtonItems = [locationBarButton]
     }
 
-    private func updateAddedCities() {
-        guard let cities = frc.fetchedObjects else {
-            //вывести вьюшку с пустой страницей
-            return
+    private func setupSubviews() {
+        updateAddedCities()
+        if !addedCitiesVC.isEmpty {
+            self.setViewControllers([addedCitiesVC[0]], direction: .forward, animated: true)
         }
-        for city in cities {
-            let vc = CityViewController(city: city)
-            vc.title = "\(city.city), \(city.country)"
-            addedCitiesVC.append(vc)
+        view.addSubview(noCityView)
+    }
+
+    private func setupSubviewsLayout() {
+        NSLayoutConstraint.activate([
+            noCityView.topAnchor.constraint(equalTo: view.topAnchor),
+            noCityView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            noCityView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            noCityView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+
+    private func updateAddedCities() {
+        guard let cities = frc.fetchedObjects else { return }
+        if !cities.isEmpty {
+            noCityView.isHidden = true
+            addedCitiesVC = []
+
+            for city in cities {
+                let vc = CityViewController(city: city)
+//                vc.title = "\(city.city), \(city.country)"
+                addedCitiesVC.append(vc)
+            }
+            debugPrint("🌞🌞🌞\(addedCitiesVC.count)")
+            self.setViewControllers([addedCitiesVC[0]], direction: .forward, animated: true)
         }
     }
 
@@ -169,16 +198,14 @@ extension CitiesPageViewController: UIPageViewControllerDelegate {
 
 extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith diff: CollectionDifference<NSManagedObjectID>) {
-        updateAddedCities()
-        view.layoutIfNeeded()
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.updateAddedCities()
+            self?.view.layoutIfNeeded()
+        }
+
     }
-//    func controller(
-//        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-//        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
-//    ) {
-//        updateAddedCities()
-//    }
+
 
 
 }

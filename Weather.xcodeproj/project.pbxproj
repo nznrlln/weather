@@ -28,6 +28,8 @@
 		FD6081E9298582BA00F8BF27 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081E8298582BA00F8BF27 /* AlertHelper.swift */; };
 		FD6081EB298682B700F8BF27 /* TwentyFourScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */; };
 		FD6081ED2986AEFF00F8BF27 /* TwentyFourALConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */; };
+		FD6081EF2987AD2D00F8BF27 /* CustomDaysButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */; };
+		FD6081F32987E91000F8BF27 /* NoCityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081F22987E91000F8BF27 /* NoCityView.swift */; };
 		FD69AEAA2945099F00A4A391 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD69AEA92945099F00A4A391 /* SettingsViewController.swift */; };
 		FD69AEAD2945E79900A4A391 /* DaySummaryWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD69AEAC2945E79900A4A391 /* DaySummaryWeatherViewController.swift */; };
 		FD69AEBC29464F1A00A4A391 /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD69AEAE29464F1900A4A391 /* Rubik-ExtraBold.ttf */; };
@@ -90,6 +92,8 @@
 		FD6081E8298582BA00F8BF27 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyFourScreenView.swift; sourceTree = "<group>"; };
 		FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyFourALConstants.swift; sourceTree = "<group>"; };
+		FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDaysButton.swift; sourceTree = "<group>"; };
+		FD6081F22987E91000F8BF27 /* NoCityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCityView.swift; sourceTree = "<group>"; };
 		FD69AEA92945099F00A4A391 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FD69AEAC2945E79900A4A391 /* DaySummaryWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryWeatherViewController.swift; sourceTree = "<group>"; };
 		FD69AEAE29464F1900A4A391 /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -198,6 +202,7 @@
 				FD91229C2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift */,
 				FD6081D8297F13F300F8BF27 /* UserDefaultSettings.swift */,
 				FD6081E8298582BA00F8BF27 /* AlertHelper.swift */,
+				FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -224,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				FD69AECB2947ADEE00A4A391 /* CitiesPageViewController.swift */,
+				FD6081F22987E91000F8BF27 /* NoCityView.swift */,
 				FD6081E52985801200F8BF27 /* CityWeatherScreen */,
 			);
 			path = CitiesWeatherScreen;
@@ -449,12 +455,14 @@
 				FD3E5E3D28EF542900C5CE1F /* ALConstants.swift in Sources */,
 				FD6081E7298580BC00F8BF27 /* CityView.swift in Sources */,
 				FDCA8AFC2974422600FF58D0 /* CurrentWeatherModel.swift in Sources */,
+				FD6081EF2987AD2D00F8BF27 /* CustomDaysButton.swift in Sources */,
 				FD9122A329662E5F00248104 /* HourDetailTableViewCell.swift in Sources */,
 				FD3E5E2A28EF4DB100C5CE1F /* Weather.xcdatamodeld in Sources */,
 				FD6081DC2985392900F8BF27 /* PermissionScreenView.swift in Sources */,
 				FD91229D2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				FDCA8AEE2969830100FF58D0 /* SunMoonView.swift in Sources */,
 				FDCA8B012976D89F00FF58D0 /* Forecast16dModel.swift in Sources */,
+				FD6081F32987E91000F8BF27 /* NoCityView.swift in Sources */,
 				FD6081E029854CF500F8BF27 /* PermissionALConstants.swift in Sources */,
 				FD3E5E3928EF4EAD00C5CE1F /* PermissionViewController.swift in Sources */,
 				FD6081DE2985490F00F8BF27 /* SettingsScreenView.swift in Sources */,

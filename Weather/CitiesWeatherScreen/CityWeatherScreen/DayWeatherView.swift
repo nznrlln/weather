@@ -9,8 +9,6 @@ import UIKit
 
 class DayWeatherView: UIView {
 
-    private let currentWeather: CurrentWeatherCoreData?
-
     private let ellipseImage: UIImageView = {
         let imageView = UIImageView()
         imageView.toAutoLayout()
@@ -32,7 +30,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 14)
         label.textColor = .white
-        label.text = currentWeather?.sunriseTime ?? "05:41"
+        label.text =  "05:41"
 
         return label
     }()
@@ -50,7 +48,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 14)
         label.textColor = .white
-        label.text = currentWeather?.sunsetTime ?? "19:31"
+        label.text = "19:31"
 
         return label
     }()
@@ -60,7 +58,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 16)
         label.textColor = .white
-        label.text = "\((currentWeather?.temperature ?? 0) - 5)º / \((currentWeather?.temperature ?? 0) + 5)º"
+        label.text = "nilº / nilº"
 
         return label
     }()
@@ -70,7 +68,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 36)
         label.textColor = .white
-        label.text = "\(currentWeather?.temperature)º"
+        label.text = "nil º"
 
         return label
     }()
@@ -80,7 +78,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 16)
         label.textColor = .white
-        label.text = "\(currentWeather?.weatherDescription ?? "заглушка")"
+        label.text = "заглушка"
 
         return label
     }()
@@ -99,7 +97,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "\(currentWeather?.uvIndex)"
+        label.text = "0"
 
         return label
     }()
@@ -126,7 +124,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "\(currentWeather?.windVelocity) м/с"
+        label.text = "7 м/с"
 
         return label
     }()
@@ -153,7 +151,7 @@ class DayWeatherView: UIView {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "\(currentWeather?.humidityLevel) %"
+        label.text = "0 %"
 
         return label
     }()
@@ -176,8 +174,7 @@ class DayWeatherView: UIView {
         return label
     }()
 
-    init(frame: CGRect, currentWeather: CurrentWeatherCoreData?) {
-        self.currentWeather = currentWeather
+    override init(frame: CGRect) {
         super.init(frame: frame)
 
         setupSubviews()
@@ -186,6 +183,22 @@ class DayWeatherView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupView(model: CurrentWeatherCoreData?) {
+        guard let currentWeather = model else {
+//            preconditionFailure("нет погоды")
+            return
+        }
+        sunriseTimeLabel.text = currentWeather.sunriseTime
+        sunsetTimeLabel.text = currentWeather.sunsetTime
+        tempRangeLabel.text = "\(currentWeather.temperature - 5)º / \(currentWeather.temperature + 5)º"
+        currentTempLabel.text = "\(currentWeather.temperature)º"
+        weatherPredictionLabel.text = currentWeather.weatherDescription
+        uvLabel.text = "\(currentWeather.uvIndex)"
+        windVelocityLabel.text = "\(currentWeather.windVelocity) м/с"
+        humidityLabel.text = "\(currentWeather.humidityLevel) %"
+//        currentTimeDateLabel.text =
     }
 
     private func setupSubviews() {
@@ -252,7 +265,8 @@ class DayWeatherView: UIView {
             uvStackView.widthAnchor.constraint(equalToConstant: 35),
 
             windStackView.topAnchor.constraint(equalTo: weatherPredictionLabel.bottomAnchor, constant: 15),
-            windStackView.leadingAnchor.constraint(equalTo: uvStackView.trailingAnchor, constant: 19),
+//            windStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -5),
+            windStackView.leadingAnchor.constraint(equalTo: uvStackView.trailingAnchor, constant: 27),
             windStackView.heightAnchor.constraint(equalToConstant: 18),
             windStackView.widthAnchor.constraint(equalToConstant: 66),
 
@@ -264,8 +278,6 @@ class DayWeatherView: UIView {
             currentTimeDateLabel.topAnchor.constraint(equalTo: windStackView.bottomAnchor, constant: 15),
             currentTimeDateLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             currentTimeDateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -21),
-
-
         ])
     }
 }

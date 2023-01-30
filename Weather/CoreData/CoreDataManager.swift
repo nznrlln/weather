@@ -43,9 +43,10 @@ class CoreDataManager {
             guard let lon = newCity.longitude else { return }
             guard let lat = newCity.latitude else { return }
 
-//            NetworkManager.defaultManager.currentWeatherRequest(lon, lat) { [weak self] weather in
-//                self?.updateCurrentWeather(weather: weather, to: newCity)
-//            }
+            debugPrint("🌼🌼")
+            NetworkManager.defaultManager.currentWeatherRequest(lon, lat) { [weak self] weather in
+                self?.updateCurrentWeather(weather: weather, to: newCity)
+            }
 //            NetworkManager.defaultManager.forecast5dBy3hRequest(lon, lat) { [weak self] forecast in
 //                self?.updateForecast24h(weather: forecast, to: newCity)
 //            }
@@ -78,11 +79,6 @@ class CoreDataManager {
         }
     }
 
-//    func deleteCity(city: CityCoreData) {
-//        mainContext.delete(city)
-//        saveMainContext()
-//    }
-
     func updateCurrentWeather(weather model: CurrentWeatherModel, to city: CityCoreData) {
         persistentContainer.performBackgroundTask { taskContext in
             let objectId = city.objectID
@@ -93,7 +89,7 @@ class CoreDataManager {
                 existingWeather.temperature = model.data[0].temperature
                 existingWeather.weatherCode = Int16(model.data[0].weather.code)
                 existingWeather.weatherDescription = model.data[0].weather.description
-                existingWeather.uvIndex = model.data[0].uvIndex
+                existingWeather.uvIndex = Int16(model.data[0].uvIndex)
                 existingWeather.windVelocity = model.data[0].windVelocity
                 existingWeather.airQualityIndex = Int16(model.data[0].airQualityIndex)
                 existingWeather.airQualityIndexScore = CoreDataHelper.defaultHelper.getAQIScore(from: model.data[0].airQualityIndex)
@@ -106,13 +102,13 @@ class CoreDataManager {
                 newCurrentWeather.temperature = model.data[0].temperature
                 newCurrentWeather.weatherCode = Int16(model.data[0].weather.code)
                 newCurrentWeather.weatherDescription = model.data[0].weather.description
-                newCurrentWeather.uvIndex = model.data[0].uvIndex
+                newCurrentWeather.uvIndex = Int16(model.data[0].uvIndex)
                 newCurrentWeather.windVelocity = model.data[0].windVelocity
                 newCurrentWeather.airQualityIndex = Int16(model.data[0].airQualityIndex)
                 newCurrentWeather.airQualityIndexScore = CoreDataHelper.defaultHelper.getAQIScore(from: model.data[0].airQualityIndex)
                 newCurrentWeather.airQualityIndexDescription = CoreDataHelper.defaultHelper.getAQIDescription(from: model.data[0].airQualityIndex)
                 newCurrentWeather.humidityLevel = Int16(model.data[0].humidityLevel)
-                newCurrentWeather.toCity = copyCity // ошибка разных контекстов
+                newCurrentWeather.toCity = copyCity 
 //                city.currentWeather = newCurrentWeather
             }
             do {
@@ -172,7 +168,7 @@ class CoreDataManager {
                 new1dWeather.sunsetTime = CoreDataHelper.defaultHelper.getTime(from: data.sunsetTime)
                 new1dWeather.temperatureMax = data.temperatureMax
                 new1dWeather.temperatureMin = data.temperatureMin
-                new1dWeather.uvIndex = data.uvIndex
+                new1dWeather.uvIndex = Int16(data.uvIndex)
                 new1dWeather.weatherCode = Int16(data.weather.code)
                 new1dWeather.weatherDescription = data.weather.description
                 new1dWeather.windVelocity = data.windVelocity

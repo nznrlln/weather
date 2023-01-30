@@ -89,7 +89,6 @@ class NetworkManager {
         urlRequest.httpMethod = "GET"
         urlRequest.allHTTPHeaderFields = headers
 
-        print(urlRequest)
         AF.request(urlRequest).responseJSON(queue: .global(qos: .background)) { response in
             if let data = response.data {
                 do {
@@ -122,7 +121,6 @@ class NetworkManager {
         urlRequest.httpMethod = "GET"
         urlRequest.allHTTPHeaderFields = headers
 
-        print(urlRequest)
         AF.request(urlRequest).responseJSON(queue: .global(qos: .background)) { response in
             if let data = response.data {
                 do {
@@ -155,7 +153,6 @@ class NetworkManager {
         urlRequest.httpMethod = "GET"
         urlRequest.allHTTPHeaderFields = headers
 
-        print(urlRequest)
         AF.request(urlRequest).responseJSON(queue: .global(qos: .background)) { response in
             if let data = response.data {
                 do {

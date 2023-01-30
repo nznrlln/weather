@@ -15,14 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        NetworkManager.defaultManager.geoRequest("kazan") { geoModel in
+//        NetworkManager.defaultManager.geoRequest("kazan") { geoModel in
 //            print(geoModel)
 //            print(LocationManager.defaultManager.getName(geoModel))
 //            print(LocationManager.defaultManager.getCoordinates(geoModel))
-            CoreDataManager.defaultManager.addCity(geoModel: geoModel) { _ in
-                //
-            }
-        }
+//            CoreDataManager.defaultManager.addCity(geoModel: geoModel) { _ in
+//                //
+//            }
+//        }
 
 //        NetworkManager.defaultManager.currentWeatherRequest("38.5", "-78.5") { weather in
 //            

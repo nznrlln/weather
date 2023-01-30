@@ -50,13 +50,14 @@ class PermissionViewController: UIViewController {
 // MARK: - PermissionScreenDelegate
 extension PermissionViewController: PermissionScreenDelegate {
     func useLocationButtonAction() {
-        let vc = CitiesPageViewController()
-        navigationController?.pushViewController(vc, animated: true)
         LocationManager.defaultManager.getPermission()
+        let vc = CitiesPageViewController()
+        navigationController!.pushViewController(vc, animated: true)
     }
 
     func doNotUseLocationButtonAction() {
-        //
+        let vc = CitiesPageViewController()
+        navigationController!.pushViewController(vc, animated: true)
     }
 
 

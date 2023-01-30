@@ -26,7 +26,7 @@ class CityViewController: UIViewController {
     }()
 
     private lazy var dayView: DayWeatherView = {
-        let view = DayWeatherView(frame: .zero, currentWeather: city.currentWeather)
+        let view = DayWeatherView(frame: .zero)
         view.toAutoLayout()
         view.backgroundColor = UIColor(named: "MainAccentColor")
         view.layer.cornerRadius = 5
@@ -79,19 +79,10 @@ class CityViewController: UIViewController {
         return label
     }()
 
-    private let numberOfDaysButton: UIButton = {
-        let button = UIButton()
+    private let numberOfDaysButton: CustomDaysButton = {
+        let button = CustomDaysButton()
         button.toAutoLayout()
-        button.setAttributedTitle(
-            NSAttributedString(
-                string: "25 дней",
-                attributes: [
-                    NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue,
-                    NSAttributedString.Key.font : UIFont(name: "Rubik-Regular", size: 16)!
-                ]
-            ),
-            for: .normal
-        )
+        button.addTarget(self, action: #selector(numberOfDaysButtonTap), for: .touchUpInside)
 
         return button
     }()
@@ -133,6 +124,7 @@ class CityViewController: UIViewController {
     }
 
     private func setupSubviews() {
+        dayView.setupView(model: city.currentWeather ?? nil)
         contentView.addSubviews(
             dayView,
             dayHoursButton,
@@ -144,7 +136,6 @@ class CityViewController: UIViewController {
 
         scrollView.addSubview(contentView)
         view.addSubview(scrollView)
-
     }
 
     private func setupSubviewsLayout() {
@@ -152,7 +143,7 @@ class CityViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -193,6 +184,9 @@ class CityViewController: UIViewController {
         self.navigationController!.pushViewController(vc, animated: true)
     }
 
+    @objc private func numberOfDaysButtonTap() {
+        daysTableView.reloadData()
+    }
 
 }
 
@@ -241,7 +235,11 @@ extension CityViewController: UICollectionViewDelegateFlowLayout {
 
 extension CityViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        10
+        if numberOfDaysButton.is7Days {
+            return 7
+        } else {
+            return 16
+        }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
