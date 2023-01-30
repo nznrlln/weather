@@ -9,6 +9,8 @@ import UIKit
 
 class DayWeatherView: UIView {
 
+    private let currentWeather: CurrentWeatherCoreData?
+
     private let ellipseImage: UIImageView = {
         let imageView = UIImageView()
         imageView.toAutoLayout()
@@ -25,12 +27,12 @@ class DayWeatherView: UIView {
         return imageView
     }()
 
-    private let sunriseTimeLabel: UILabel = {
+    private lazy var sunriseTimeLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 14)
         label.textColor = .white
-        label.text = "05:41"
+        label.text = currentWeather?.sunriseTime ?? "05:41"
 
         return label
     }()
@@ -43,47 +45,47 @@ class DayWeatherView: UIView {
         return imageView
     }()
 
-    private let sunsetTimeLabel: UILabel = {
+    private lazy var sunsetTimeLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 14)
         label.textColor = .white
-        label.text = "19:31"
+        label.text = currentWeather?.sunsetTime ?? "19:31"
 
         return label
     }()
 
-    private let tempRangeLabel: UILabel = {
+    private lazy var tempRangeLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 16)
         label.textColor = .white
-        label.text = "7" + "º" + "/" + "13" + "º"
+        label.text = "\((currentWeather?.temperature ?? 0) - 5)º / \((currentWeather?.temperature ?? 0) + 5)º"
 
         return label
     }()
 
-    private let currentTempLabel: UILabel = {
+    private lazy var currentTempLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 36)
         label.textColor = .white
-        label.text = "13" + "º"
+        label.text = "\(currentWeather?.temperature)º"
 
         return label
     }()
 
-    private let weatherPredictionLabel: UILabel = {
+    private lazy var weatherPredictionLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 16)
         label.textColor = .white
-        label.text = "Возможен небольшой дождь"
+        label.text = "\(currentWeather?.weatherDescription ?? "заглушка")"
 
         return label
     }()
 
-    private let uvImage: UIImageView = {
+    private lazy var uvImage: UIImageView = {
         let imageView = UIImageView()
         imageView.toAutoLayout()
         imageView.image = UIImage(named: "sunAndClouds")
@@ -92,12 +94,12 @@ class DayWeatherView: UIView {
         return imageView
     }()
 
-    private let uvLabel: UILabel = {
+    private lazy var uvLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "0"
+        label.text = "\(currentWeather?.uvIndex)"
 
         return label
     }()
@@ -119,12 +121,12 @@ class DayWeatherView: UIView {
         return imageView
     }()
 
-    private let windVelocityLabel: UILabel = {
+    private lazy var windVelocityLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "3" + "м/с"
+        label.text = "\(currentWeather?.windVelocity) м/с"
 
         return label
     }()
@@ -146,12 +148,12 @@ class DayWeatherView: UIView {
         return imageView
     }()
 
-    private let humidityLabel: UILabel = {
+    private lazy var humidityLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = .white
-        label.text = "75" + "%"
+        label.text = "\(currentWeather?.humidityLevel) %"
 
         return label
     }()
@@ -174,7 +176,8 @@ class DayWeatherView: UIView {
         return label
     }()
 
-    override init(frame: CGRect) {
+    init(frame: CGRect, currentWeather: CurrentWeatherCoreData?) {
+        self.currentWeather = currentWeather
         super.init(frame: frame)
 
         setupSubviews()

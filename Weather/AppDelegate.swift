@@ -15,6 +15,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        NetworkManager.defaultManager.geoRequest("kazan") { geoModel in
+//            print(geoModel)
+//            print(LocationManager.defaultManager.getName(geoModel))
+//            print(LocationManager.defaultManager.getCoordinates(geoModel))
+            CoreDataManager.defaultManager.addCity(geoModel: geoModel) { _ in
+                //
+            }
+        }
+
+//        NetworkManager.defaultManager.currentWeatherRequest("38.5", "-78.5") { weather in
+//            
+//        }
+//        NetworkManager.defaultManager.forecast5dBy3hRequest("38.5", "-78.5") { weather in
+//            debugPrint(weather.data[0])
+//        }
+//        NetworkManager.defaultManager.forecast16dRequest("38.5", "-78.5") { weather in
+//            debugPrint(weather.data[0])
+//        }
+
+        debugPrint("app ended loading")
         return true
     }
 
@@ -31,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+
 
     // MARK: - Core Data stack
 

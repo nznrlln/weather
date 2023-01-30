@@ -18,20 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        let vc: UIViewController?
 
-        switch LocationManager.getPermissionStatus() {
+        switch LocationManager.defaultManager.getPermissionStatus() {
         case .notDetermined:
-            window.rootViewController = PermissionViewController()
+            vc = PermissionViewController()
+
+//            vc = TwentyFourHoursDetailWeatherViewController()
+
         case .restricted:
-           preconditionFailure()
+            vc = CitiesPageViewController()
         case .denied:
-            preconditionFailure()
+            vc = CitiesPageViewController()
         case .authorizedAlways:
-            window.rootViewController = CitiesPageViewController()
+            vc = CitiesPageViewController()
         case .authorizedWhenInUse:
-            window.rootViewController = CitiesPageViewController()
+            vc = CitiesPageViewController()
         @unknown default:
-            preconditionFailure()
+            vc = PermissionViewController()
         }
 
 
@@ -42,7 +46,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window.rootViewController = TwentyFourHoursDetailWeatherViewController()
 //        window.rootViewController = DaySummaryWeatherViewController()
 
-
+        guard let initialVC = vc else { preconditionFailure("no root ViewController") }
+        let nc = UINavigationController(rootViewController: initialVC)
+        window.rootViewController = nc
 
         window.makeKeyAndVisible()
         self.window = window

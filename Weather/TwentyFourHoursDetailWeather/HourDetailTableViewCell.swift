@@ -88,7 +88,7 @@ class HourDetailTableViewCell: UITableViewCell {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.textColor = UIColor(named: "SecondaryTextColor")
-        label.text = "2" + "m/s" + "ССЗ"
+        label.text = "2" + " м/с" + " ССЗ"
 
         return label
     }()

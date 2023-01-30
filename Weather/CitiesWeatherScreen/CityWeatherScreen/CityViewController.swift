@@ -9,6 +9,8 @@ import UIKit
 
 class CityViewController: UIViewController {
 
+    private var city: CityCoreData!
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.toAutoLayout()
@@ -23,8 +25,8 @@ class CityViewController: UIViewController {
         return view
     }()
 
-    private let dayView: DayWeatherView = {
-        let view = DayWeatherView()
+    private lazy var dayView: DayWeatherView = {
+        let view = DayWeatherView(frame: .zero, currentWeather: city.currentWeather)
         view.toAutoLayout()
         view.backgroundColor = UIColor(named: "MainAccentColor")
         view.layer.cornerRadius = 5
@@ -46,6 +48,7 @@ class CityViewController: UIViewController {
             ),
             for: .normal
         )
+        button.addTarget(self, action: #selector(dayHoursButtonTap), for: .touchUpInside)
 
         return button
     }()
@@ -105,6 +108,15 @@ class CityViewController: UIViewController {
         return tableView
     }()
 
+    init(city: CityCoreData!) {
+        self.city = city
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -148,7 +160,7 @@ class CityViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            dayView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
+            dayView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             dayView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             dayView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
@@ -174,6 +186,11 @@ class CityViewController: UIViewController {
             daysTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             daysTableView.heightAnchor.constraint(equalToConstant: 400)
         ])
+    }
+
+    @objc private func dayHoursButtonTap() {
+        let vc = TwentyFourHoursDetailWeatherViewController()
+        self.navigationController!.pushViewController(vc, animated: true)
     }
 
 
@@ -210,6 +227,12 @@ extension CityViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let vc = TwentyFourHoursDetailWeatherViewController()
+        self.navigationController!.pushViewController(vc, animated: true)
     }
 }
 
@@ -251,5 +274,11 @@ extension CityViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         10
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let vc = DaySummaryWeatherViewController()
+        self.navigationController!.pushViewController(vc, animated: true)
     }
 }

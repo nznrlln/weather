@@ -38,6 +38,7 @@ class DaySummaryWeatherViewController: UIViewController {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.toAutoLayout()
+        collectionView.showsHorizontalScrollIndicator = false
 
         collectionView.register(
             UICollectionViewCell.self,
