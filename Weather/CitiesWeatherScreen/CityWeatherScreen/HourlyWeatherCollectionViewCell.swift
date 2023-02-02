@@ -46,13 +46,25 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupCell() {
+    func setupCell(model: Forecast3hCoreData?) {
+        guard let forecast = model else { preconditionFailure() }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let date = dateFormatter.date(from: forecast.forecastTime ?? "2023-01-17T04:00:00")
+
+        dateFormatter.dateFormat = "HH:mm"
+        hourLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
+        weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
+        temperatureLabel.text = "\(forecast.temperature)"
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        hourLabel.text = ""
         weatherImageView.image = nil
+        temperatureLabel.text = ""
     }
 
     private func cellInitialSetting() {
@@ -74,7 +86,6 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
 
     private func setupSubviewsLayout() {
         NSLayoutConstraint.activate([
-
             hourLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             hourLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
@@ -83,7 +94,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
             weatherImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -13),
             weatherImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -31),
 
-            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 2),
+            temperatureLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
             temperatureLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }

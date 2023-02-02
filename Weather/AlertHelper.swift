@@ -26,6 +26,7 @@ class AlertHelper {
                cityName != "" {
                 NetworkManager.defaultManager.geoRequest(cityName) { geoModel in
                     CoreDataManager.defaultManager.addCityWithWeatherData(geoModel: geoModel)
+//                    CoreDataManager.defaultManager.addCity(geoModel: geoModel)
                 }
             }
         }

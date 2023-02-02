@@ -91,6 +91,22 @@ class SunMoonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setupView(model: Forecast1dCoreData?) {
+        guard let forecast = model else { preconditionFailure() }
+
+        switch viewState {
+        case .sun:
+            riseTimeLabel.text = forecast.sunriseTime
+            setTimeLabel.text = forecast.sunsetTime
+        case .moon:
+            riseTimeLabel.text = forecast.moonriseTime
+            setTimeLabel.text = forecast.moonsetTime
+        case .none:
+            riseTimeLabel.text = ""
+            setTimeLabel.text = ""
+        }
+    }
+
     private func viewInitialSettings() {
         self.backgroundColor = .white
 
@@ -127,8 +143,6 @@ class SunMoonView: UIView {
 
             setTimeLabel.centerYAnchor.constraint(equalTo: setLabel.centerYAnchor),
             setTimeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
-
-
         ])
 
     }

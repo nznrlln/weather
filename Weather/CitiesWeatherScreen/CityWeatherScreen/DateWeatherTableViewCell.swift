@@ -68,6 +68,31 @@ class DateWeatherTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setupCell(model: Forecast1dCoreData?) {
+        guard let forecast = model else { preconditionFailure() }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.date(from: forecast.forecastDate ?? "2023-01-17")
+        dateFormatter.dateFormat = "dd/MM"
+
+        dateLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
+        weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
+        humidityLabel.text = "\(forecast.humidityLevel) %"
+        currentWeatherLabel.text = forecast.weatherDescription
+        tempRangeLabel.text = "\(forecast.temperatureMin)º/\(forecast.temperatureMax)º"
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        dateLabel.text = ""
+        weatherImageView.image = nil
+        humidityLabel.text = ""
+        currentWeatherLabel.text = ""
+        tempRangeLabel.text = ""
+    }
+
     private func cellInitialSetting() {
         self.backgroundColor = UIColor(named: "MainBackgroundColor")
         self.layer.cornerRadius = 5

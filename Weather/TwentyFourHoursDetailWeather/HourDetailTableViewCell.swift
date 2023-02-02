@@ -159,6 +159,29 @@ class HourDetailTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setupCell(model: Forecast3hCoreData?) {
+        guard let forecast = model else { preconditionFailure() }
+        dateLabel.text = forecast.forecastTime
+        hourLabel.text = forecast.forecastTime
+        temperatureLabel.text = "\(forecast.temperature)º"
+        predictedWeatherLabel.text = forecast.weatherDescription
+        realFeelIndexLabel.text = "По ощущениям \(forecast.feelsLikeTemperature)º"
+        windIndexLabel.text = "\(forecast.windVelocity) м/с \(forecast.windDirection)"
+        precipitationIndexLabel.text = "\(forecast.precipitation)%"
+        cloudIndexLabel.text = "\(forecast.cloudiness)%"
+    }
+
+    override func prepareForReuse() {
+        dateLabel.text = ""
+        hourLabel.text = ""
+        temperatureLabel.text = ""
+        predictedWeatherLabel.text = ""
+        realFeelIndexLabel.text = ""
+        windIndexLabel.text = ""
+        precipitationIndexLabel.text = ""
+        cloudIndexLabel.text = ""
+    }
+
     private func cellInitialSetting() {
         self.backgroundColor = UIColor(named: "MainBackgroundColor")
 

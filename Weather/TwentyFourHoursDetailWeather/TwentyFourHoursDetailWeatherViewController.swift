@@ -9,6 +9,8 @@ import UIKit
 
 class TwentyFourHoursDetailWeatherViewController: UIViewController {
 
+    private var city: CityCoreData!
+
     private lazy var mainView: TwentyFourScreenView = {
         let view = TwentyFourScreenView()
         view.toAutoLayout()
@@ -55,6 +57,15 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
 //
 //        return tableView
 //    }()
+
+    init(city: CityCoreData!) {
+        self.city = city
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,18 +127,18 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
 // MARK: - TwentyFourScreenViewDelegate
 
 //extension TwentyFourHoursDetailWeatherViewController: TwentyFourScreenViewDelegate {
-//    // MARK: - UITableViewDataSource
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        8
+//    var forecast: Forecast3hCoreData? {
+//        get {
+//            let forecast24: [Forecast3hCoreData] = []
+//            city.f
+//        }
+//        set {
 //
+//        }
 //    }
 //
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: HourDetailTableViewCell.identifier, for: indexPath) as! HourDetailTableViewCell
 //
-//        return cell
-//    }
-
+//}
     // MARK: - UITableViewDelegate
 
 //}

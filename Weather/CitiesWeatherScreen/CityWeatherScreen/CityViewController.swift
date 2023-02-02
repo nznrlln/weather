@@ -6,10 +6,29 @@
 //
 
 import UIKit
+import CoreData
 
 class CityViewController: UIViewController {
 
     private var city: CityCoreData!
+
+    private lazy var frcForecast3h: NSFetchedResultsController<Forecast3hCoreData> = {
+        let request = Forecast3hCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "toCity == %@", city)
+        request.sortDescriptors = [NSSortDescriptor(key: "forecastTime", ascending: true)] //
+
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        return frc
+    }()
+
+    private lazy var frcForecast1d: NSFetchedResultsController<Forecast1dCoreData> = {
+        let request = Forecast1dCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "toCity == %@", city)
+        request.sortDescriptors = [NSSortDescriptor(key: "forecastDate", ascending: true)] //
+
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: "forecastDate", cacheName: nil)
+        return frc
+    }()
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -107,13 +126,28 @@ class CityViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func loadView() {
+        setupFRC()
+        super.loadView()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         viewInitialSettings()
+    }
 
+    private func setupFRC() {
+        frcForecast3h.delegate = self
+        frcForecast1d.delegate = self
+        do {
+            try frcForecast3h.performFetch()
+            try frcForecast1d.performFetch()
+        } catch {
+            debugPrint(error.localizedDescription)
+        }
     }
 
     private func viewInitialSettings() {
@@ -180,8 +214,8 @@ class CityViewController: UIViewController {
     }
 
     @objc private func dayHoursButtonTap() {
-        let vc = TwentyFourHoursDetailWeatherViewController()
-        self.navigationController!.pushViewController(vc, animated: true)
+//        let vc = TwentyFourHoursDetailWeatherViewController()
+//        self.navigationController!.pushViewController(vc, animated: true)
     }
 
     @objc private func numberOfDaysButtonTap() {
@@ -195,11 +229,22 @@ class CityViewController: UIViewController {
 
 extension CityViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        8
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath) as! HourlyWeatherCollectionViewCell
+        if let objects = frcForecast3h.fetchedObjects,
+           !objects.isEmpty {
+            cell.setupCell(model: frcForecast3h.object(at: indexPath))
+        }
+
+//        if frcForecast3h.fetchedObjects == nil {
+//            return cell
+//        } else {
+//            cell.setupCell(model: frcForecast3h.object(at: indexPath))
+//            return cell
+//        }
 
         return cell
     }
@@ -225,8 +270,8 @@ extension CityViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let vc = TwentyFourHoursDetailWeatherViewController()
-        self.navigationController!.pushViewController(vc, animated: true)
+//        let vc = TwentyFourHoursDetailWeatherViewController()
+//        self.navigationController!.pushViewController(vc, animated: true)
     }
 }
 
@@ -247,6 +292,16 @@ extension CityViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DateWeatherTableViewCell.identifier, for: indexPath) as! DateWeatherTableViewCell
+        if let objects = frcForecast1d.fetchedObjects,
+           !objects.isEmpty {
+            cell.setupCell(model: frcForecast1d.object(at: indexPath))
+        }
+
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+//            if self?.frcForecast1d.fetchedObjects != nil {
+//                cell.setupCell(model: self?.frcForecast1d.object(at: indexPath))
+//            }
+//        }
 
         return cell
     }
@@ -279,4 +334,21 @@ extension CityViewController: UITableViewDelegate {
         let vc = DaySummaryWeatherViewController()
         self.navigationController!.pushViewController(vc, animated: true)
     }
+}
+
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension CityViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+        if controller == frcForecast3h {
+            dayHoursCollectionView.reloadData()
+        }
+        if controller == frcForecast1d {
+            daysTableView.reloadData()
+        }
+    }
+
 }

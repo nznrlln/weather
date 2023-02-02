@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import CoreData
 
 protocol TwentyFourScreenViewDelegate {
-
+    var forecast: [Forecast3hCoreData]? {get}
 }
 
 class TwentyFourScreenView: UIView {
 
     var delegate: TwentyFourScreenViewDelegate?
+
+    private var frc: NSFetchedResultsController<Forecast3hCoreData>!
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -63,11 +66,32 @@ class TwentyFourScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setupView(model: CityCoreData?) {
+        guard let city = model else { preconditionFailure() }
+        cityLabel.text = "\(city.city), \(city.country)"
+    }
+
     private func viewInitialSettings() {
         self.backgroundColor = .white
 
+        initialFRC(nil)
         setupSubviews()
         setupSubviewsLayout()
+    }
+
+    private func initialFRC(_ cityFilter: String?) {
+        let request = Forecast3hCoreData.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "uid", ascending: true)]
+
+//        if let cityFilter = filter {
+//            request.predicate = NSPredicate(format: "city contains[c] %@", cityFilter)
+//        }
+
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        try? frc.performFetch()
+
+        self.frc = frc
+//        self.frc.delegate = self
     }
 
     private func setupSubviews() {
@@ -120,6 +144,7 @@ extension TwentyFourScreenView: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: HourDetailTableViewCell.identifier, for: indexPath) as! HourDetailTableViewCell
+//        cell.setupCell(model: delegate?.forecast)
 
         return cell
     }

@@ -44,15 +44,39 @@ class CoreDataManager {
             guard let lat = newCity.latitude else { return }
 
             debugPrint("🌼🌼")
-            NetworkManager.defaultManager.currentWeatherRequest(lon, lat) { [weak self] weather in
-                self?.updateCurrentWeather(weather: weather, to: newCity)
+            let group = DispatchGroup()
+
+            group.enter()
+            DispatchQueue.main.async {
+                NetworkManager.defaultManager.currentWeatherRequest(lon, lat) { [weak self] weather in
+                    self?.updateCurrentWeather(weather: weather, to: newCity) {
+                        group.leave()
+                    }
+                }
             }
-//            NetworkManager.defaultManager.forecast5dBy3hRequest(lon, lat) { [weak self] forecast in
-//                self?.updateForecast24h(weather: forecast, to: newCity)
-//            }
-//            NetworkManager.defaultManager.forecast16dRequest(lon, lat) { [weak self] forecast in
-//                self?.updateForecast16d(weather: forecast, to: newCity)
-//            }
+            group.wait()
+
+            DispatchQueue.main.async {
+                group.enter()
+                NetworkManager.defaultManager.forecast5dBy3hRequest(lon, lat) { [weak self] forecast in
+                    self?.updateForecast24h(weather: forecast, to: newCity) {
+                        group.leave()
+                    }
+                }
+            }
+            group.wait()
+
+
+            DispatchQueue.main.async {
+                group.enter()
+                NetworkManager.defaultManager.forecast16dRequest(lon, lat) { [weak self] forecast in
+                    self?.updateForecast16d(weather: forecast, to: newCity) {
+                        group.leave()
+                    }
+                }
+            }
+            group.wait()
+
         }
     }
 
@@ -79,18 +103,41 @@ class CoreDataManager {
         }
     }
 
-    func updateCurrentWeather(weather model: CurrentWeatherModel, to city: CityCoreData) {
+//    func addCity(geoModel: GeoModel) {
+//        guard let cityLocation = LocationManager.defaultManager.getCoordinates(geoModel) else { return }
+//        guard let cityName = LocationManager.defaultManager.getName(geoModel) else { return }
+//        let exist = cityCheck(name: cityName.city)
+//        if !exist {
+//            persistentContainer.performBackgroundTask { taskContext in
+//                let newCity = CityCoreData(context: taskContext)
+//                newCity.city = cityName.city
+//                newCity.country = cityName.country
+//                newCity.latitude = cityLocation.latitude
+//                newCity.longitude = cityLocation.longitude
+//                do {
+//                    try taskContext.save()
+//                    debugPrint("City added")
+//                    debugPrint(newCity)
+//                } catch {
+//                    debugPrint("🎲 CoreDataError: \(error)")
+//                }
+//            }
+//        }
+//    }
+
+
+    func updateCurrentWeather(weather model: CurrentWeatherModel, to city: CityCoreData, completion: @escaping () -> ()) {
         persistentContainer.performBackgroundTask { taskContext in
             let objectId = city.objectID
             let copyCity = taskContext.object(with: objectId) as! CityCoreData
             if let existingWeather = copyCity.currentWeather {
                 existingWeather.sunriseTime = model.data[0].sunriseTime
                 existingWeather.sunsetTime = model.data[0].sunsetTime
-                existingWeather.temperature = model.data[0].temperature
+                existingWeather.temperature = Int16(model.data[0].temperature)
                 existingWeather.weatherCode = Int16(model.data[0].weather.code)
                 existingWeather.weatherDescription = model.data[0].weather.description
                 existingWeather.uvIndex = Int16(model.data[0].uvIndex)
-                existingWeather.windVelocity = model.data[0].windVelocity
+                existingWeather.windVelocity = Int16(model.data[0].windVelocity)
                 existingWeather.airQualityIndex = Int16(model.data[0].airQualityIndex)
                 existingWeather.airQualityIndexScore = CoreDataHelper.defaultHelper.getAQIScore(from: model.data[0].airQualityIndex)
                 existingWeather.airQualityIndexDescription = CoreDataHelper.defaultHelper.getAQIDescription(from: model.data[0].airQualityIndex)
@@ -99,64 +146,75 @@ class CoreDataManager {
                 let newCurrentWeather = CurrentWeatherCoreData(context: taskContext)
                 newCurrentWeather.sunriseTime = model.data[0].sunriseTime
                 newCurrentWeather.sunsetTime = model.data[0].sunsetTime
-                newCurrentWeather.temperature = model.data[0].temperature
+                newCurrentWeather.temperature = Int16(model.data[0].temperature)
                 newCurrentWeather.weatherCode = Int16(model.data[0].weather.code)
                 newCurrentWeather.weatherDescription = model.data[0].weather.description
                 newCurrentWeather.uvIndex = Int16(model.data[0].uvIndex)
-                newCurrentWeather.windVelocity = model.data[0].windVelocity
+                newCurrentWeather.windVelocity = Int16(model.data[0].windVelocity)
                 newCurrentWeather.airQualityIndex = Int16(model.data[0].airQualityIndex)
                 newCurrentWeather.airQualityIndexScore = CoreDataHelper.defaultHelper.getAQIScore(from: model.data[0].airQualityIndex)
                 newCurrentWeather.airQualityIndexDescription = CoreDataHelper.defaultHelper.getAQIDescription(from: model.data[0].airQualityIndex)
                 newCurrentWeather.humidityLevel = Int16(model.data[0].humidityLevel)
                 newCurrentWeather.toCity = copyCity 
-//                city.currentWeather = newCurrentWeather
             }
             do {
                 try taskContext.save()
+                completion()
             } catch {
                 debugPrint("🎲 Failed to update current weather: \(error)")
             }
         }
     }
 
-    func updateForecast24h(weather model: Forecast5dBy3hModel, to city: CityCoreData) {
+    func updateForecast24h(weather model: Forecast5dBy3hModel, to city: CityCoreData, completion: @escaping () -> ()) {
         persistentContainer.performBackgroundTask { taskContext in
             let objectId = city.objectID
             let copyCity = taskContext.object(with: objectId) as! CityCoreData
+
+            copyCity.forecast3h?.forEach({ [weak self] hourForecast in
+                taskContext.delete(hourForecast as! Forecast3hCoreData)
+//                self?.removeOutdated24hForecast(forecast: hourForecast as! Forecast3hCoreData, context: taskContext)
+            })
+
             for index in 0...7 {
                 let new3hWeather = Forecast3hCoreData(context: taskContext)
                 new3hWeather.uid = UUID().uuidString
                 new3hWeather.cloudiness = Int16(model.data[index].cloudiness)
-                new3hWeather.feelsLikeTemperature = model.data[index].feelsLikeTemperature
+                new3hWeather.feelsLikeTemperature = Int16(model.data[index].feelsLikeTemperature)
                 new3hWeather.forecastTime = model.data[index].forecastTime
                 new3hWeather.humidityLevel = Int16(model.data[index].humidityLevel)
                 new3hWeather.precipitation = Int16(model.data[index].precipitation)
-                new3hWeather.temperature = model.data[index].temperature
+                new3hWeather.temperature = Int16(model.data[index].temperature)
                 new3hWeather.weatherCode = Int16(model.data[index].weather.code)
                 new3hWeather.weatherDescription = model.data[index].weather.description
-                new3hWeather.windVelocity = model.data[index].windVelocity
+                new3hWeather.windVelocity = Int16(model.data[index].windVelocity)
                 new3hWeather.windDirection = model.data[index].windDirection
                 new3hWeather.toCity = copyCity
                 copyCity.addToForecast3h(new3hWeather)
             }
             do {
                 try taskContext.save()
+                completion()
             } catch {
                 debugPrint("🎲 Failed to update 1 day weather forecast: \(error)")
             }
         }
     }
 
-    func updateForecast16d(weather model: Forecast16dModel, to city: CityCoreData) {
+    func updateForecast16d(weather model: Forecast16dModel, to city: CityCoreData, completion: @escaping () -> ()) {
         persistentContainer.performBackgroundTask { taskContext in
             let objectId = city.objectID
             let copyCity = taskContext.object(with: objectId) as! CityCoreData
+            copyCity.forecast1d?.forEach({ [weak self] dayForecast in
+                taskContext.delete(dayForecast as! Forecast1dCoreData)
+//                self?.removeOutdated16dForecast(forecast: dayForecast as! Forecast1dCoreData, context: taskContext)
+            })
             for data in model.data {
                 let new1dWeather = Forecast1dCoreData(context: taskContext)
                 new1dWeather.uid = UUID().uuidString
                 new1dWeather.cloudiness = Int16(data.cloudiness)
-                new1dWeather.feelsLikeTemperatureMax = data.feelsLikeTemperatureMax
-                new1dWeather.feelsLikeTemperatureMin = data.feelsLikeTemperatureMin
+                new1dWeather.feelsLikeTemperatureMax = Int16(data.feelsLikeTemperatureMax)
+                new1dWeather.feelsLikeTemperatureMin = Int16(data.feelsLikeTemperatureMin)
                 new1dWeather.forecastDate = data.forecastDate
                 new1dWeather.humidityLevel = Int16(data.humidityLevel)
                 new1dWeather.moonphase = data.moonphase
@@ -166,18 +224,19 @@ class CoreDataManager {
                 new1dWeather.precipitation = Int16(data.precipitation)
                 new1dWeather.sunriseTime = CoreDataHelper.defaultHelper.getTime(from: data.sunriseTime)
                 new1dWeather.sunsetTime = CoreDataHelper.defaultHelper.getTime(from: data.sunsetTime)
-                new1dWeather.temperatureMax = data.temperatureMax
-                new1dWeather.temperatureMin = data.temperatureMin
+                new1dWeather.temperatureMax = Int16(data.temperatureMax)
+                new1dWeather.temperatureMin = Int16(data.temperatureMin)
                 new1dWeather.uvIndex = Int16(data.uvIndex)
                 new1dWeather.weatherCode = Int16(data.weather.code)
                 new1dWeather.weatherDescription = data.weather.description
-                new1dWeather.windVelocity = data.windVelocity
+                new1dWeather.windVelocity = Int16(data.windVelocity)
                 new1dWeather.windDirection = data.windDirection
                 new1dWeather.toCity = copyCity
                 copyCity.addToForecast1d(new1dWeather)
             }
             do {
                 try taskContext.save()
+                completion()
             } catch {
                 debugPrint("🎲 Failed to update 16d weather forecast: \(error)")
             }
@@ -201,17 +260,23 @@ class CoreDataManager {
         }
     }
 
-//    private func removeOutdated5dForecast(from city: CityCoreData, context: NSManagedObjectContext) {
-//        for forecast in city.forecast3h {
-//            context.delete(forecast)
-//        }
-//    }
-//
-//    private func removeOutdated16dForecast(from city: CityCoreData, context: NSManagedObjectContext) {
-//        for forecast in city.forecast1d {
-//            context.delete(forecast)
-//        }
-//    }
+    private func removeOutdated24hForecast(forecast: Forecast3hCoreData, context: NSManagedObjectContext) {
+        context.delete(forecast)
+        do {
+           try context.save()
+        } catch {
+            debugPrint(error.localizedDescription)
+        }
+    }
+
+    private func removeOutdated16dForecast(forecast: Forecast1dCoreData, context: NSManagedObjectContext) {
+        context.delete(forecast)
+        do {
+           try context.save()
+        } catch {
+            debugPrint(error.localizedDescription)
+        }
+    }
         
     }
 

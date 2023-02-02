@@ -70,14 +70,18 @@ class CitiesPageViewController: UIPageViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+
+        setupFRC()
+        viewInitialSettings()
+    }
+
+    private func setupFRC() {
         frc.delegate = self
         do {
             try frc.performFetch()
         } catch {
             debugPrint(error.localizedDescription)
         }
-
-        viewInitialSettings()
     }
 
     private func viewInitialSettings() {
@@ -98,9 +102,6 @@ class CitiesPageViewController: UIPageViewController {
 
     private func setupSubviews() {
         updateAddedCities()
-        if !addedCitiesVC.isEmpty {
-            self.setViewControllers([addedCitiesVC[0]], direction: .forward, animated: true)
-        }
         view.addSubview(noCityView)
     }
 
@@ -113,7 +114,6 @@ class CitiesPageViewController: UIPageViewController {
         ])
     }
 
-
     private func updateAddedCities() {
         guard let cities = frc.fetchedObjects else { return }
         if !cities.isEmpty {
@@ -122,7 +122,6 @@ class CitiesPageViewController: UIPageViewController {
 
             for city in cities {
                 let vc = CityViewController(city: city)
-//                vc.title = "\(city.city), \(city.country)"
                 addedCitiesVC.append(vc)
             }
             debugPrint("🌞🌞🌞\(addedCitiesVC.count)")
@@ -199,11 +198,13 @@ extension CitiesPageViewController: UIPageViewControllerDelegate {
 extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        updateAddedCities()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.updateAddedCities()
-            self?.view.layoutIfNeeded()
+            if let newCity = anObject as? CityCoreData {
+                self?.updateAddedCities()
+            }
         }
-
+        view.layoutIfNeeded()
     }
 
 

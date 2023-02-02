@@ -9,6 +9,10 @@ import Foundation
 
 struct Forecast5dBy3hModel: Codable {
     let data: [Forecast5dBy3hJSONData]
+
+    enum CodingKeys: String, CodingKey {
+        case data = "data"
+    }
 }
 
 struct Forecast5dBy3hJSONData: Codable {

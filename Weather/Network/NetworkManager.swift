@@ -12,7 +12,10 @@ class NetworkManager {
     static let defaultManager = NetworkManager()
     
     private let geoKey: String = "ff7239e6-7563-42d0-9446-93515a1bd757"
-    private let weatherKey: String = "31cd180094msheb5e6fc204d8e5ap125d5ejsn6610bfc143e8"
+    private let weatherKey: String = "31cd180094msheb5e6fc204d8e5ap125d5ejsn6610bfc143e8" // первый аккаунт
+//    private let weatherKey: String = "2d130e4cdemsh73765ff29163795p1b1972jsnd1bb44fd8915" // второй аккаунт
+
+
 
     func geoRequest(_ locationName: String, complitionHandler: @escaping (GeoModel) -> Void) {
         var urlComponents = URLComponents()

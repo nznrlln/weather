@@ -24,7 +24,6 @@
 		FD6081DE2985490F00F8BF27 /* SettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081DD2985490F00F8BF27 /* SettingsScreenView.swift */; };
 		FD6081E029854CF500F8BF27 /* PermissionALConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081DF29854CF500F8BF27 /* PermissionALConstants.swift */; };
 		FD6081E22985798600F8BF27 /* SettingsALConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081E12985798600F8BF27 /* SettingsALConstants.swift */; };
-		FD6081E7298580BC00F8BF27 /* CityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081E6298580BC00F8BF27 /* CityView.swift */; };
 		FD6081E9298582BA00F8BF27 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081E8298582BA00F8BF27 /* AlertHelper.swift */; };
 		FD6081EB298682B700F8BF27 /* TwentyFourScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */; };
 		FD6081ED2986AEFF00F8BF27 /* TwentyFourALConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */; };
@@ -54,7 +53,6 @@
 		FD9122A329662E5F00248104 /* HourDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */; };
 		FD9122A72966337D00248104 /* TwentyFourHoursDetailWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9122A62966337D00248104 /* TwentyFourHoursDetailWeatherViewController.swift */; };
 		FDCA8AEE2969830100FF58D0 /* SunMoonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCA8AED2969830100FF58D0 /* SunMoonView.swift */; };
-		FDCA8AF02969CA6900FF58D0 /* DayNightTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCA8AEF2969CA6900FF58D0 /* DayNightTableView.swift */; };
 		FDCA8AF22969CA9700FF58D0 /* DayNightTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCA8AF12969CA9700FF58D0 /* DayNightTableHeaderView.swift */; };
 		FDCA8AF4296A10EE00FF58D0 /* DayNightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCA8AF3296A10EE00FF58D0 /* DayNightTableViewCell.swift */; };
 		FDCA8AF6296B2E8F00FF58D0 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCA8AF5296B2E8F00FF58D0 /* LocationManager.swift */; };
@@ -88,7 +86,6 @@
 		FD6081DD2985490F00F8BF27 /* SettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenView.swift; sourceTree = "<group>"; };
 		FD6081DF29854CF500F8BF27 /* PermissionALConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionALConstants.swift; sourceTree = "<group>"; };
 		FD6081E12985798600F8BF27 /* SettingsALConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsALConstants.swift; sourceTree = "<group>"; };
-		FD6081E6298580BC00F8BF27 /* CityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityView.swift; sourceTree = "<group>"; };
 		FD6081E8298582BA00F8BF27 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyFourScreenView.swift; sourceTree = "<group>"; };
 		FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyFourALConstants.swift; sourceTree = "<group>"; };
@@ -118,7 +115,6 @@
 		FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourDetailTableViewCell.swift; sourceTree = "<group>"; };
 		FD9122A62966337D00248104 /* TwentyFourHoursDetailWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyFourHoursDetailWeatherViewController.swift; sourceTree = "<group>"; };
 		FDCA8AED2969830100FF58D0 /* SunMoonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunMoonView.swift; sourceTree = "<group>"; };
-		FDCA8AEF2969CA6900FF58D0 /* DayNightTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNightTableView.swift; sourceTree = "<group>"; };
 		FDCA8AF12969CA9700FF58D0 /* DayNightTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNightTableHeaderView.swift; sourceTree = "<group>"; };
 		FDCA8AF3296A10EE00FF58D0 /* DayNightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNightTableViewCell.swift; sourceTree = "<group>"; };
 		FDCA8AF5296B2E8F00FF58D0 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -198,8 +194,6 @@
 				FD9122A429662E9600248104 /* TwentyFourHoursDetailWeather */,
 				FD9122A529662EFA00248104 /* DaySummaryWeather */,
 				FDCA8AFD2976511600FF58D0 /* Network */,
-				FD91229E2963698F00248104 /* DateWeatherTableViewCell.swift */,
-				FD91229C2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift */,
 				FD6081D8297F13F300F8BF27 /* UserDefaultSettings.swift */,
 				FD6081E8298582BA00F8BF27 /* AlertHelper.swift */,
 				FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */,
@@ -240,7 +234,8 @@
 			children = (
 				FD69AECD294F2E2C00A4A391 /* CityViewController.swift */,
 				FD69AECF294F382400A4A391 /* DayWeatherView.swift */,
-				FD6081E6298580BC00F8BF27 /* CityView.swift */,
+				FD91229E2963698F00248104 /* DateWeatherTableViewCell.swift */,
+				FD91229C2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift */,
 			);
 			path = CityWeatherScreen;
 			sourceTree = "<group>";
@@ -279,8 +274,8 @@
 		FD9122A429662E9600248104 /* TwentyFourHoursDetailWeather */ = {
 			isa = PBXGroup;
 			children = (
-				FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */,
 				FD9122A62966337D00248104 /* TwentyFourHoursDetailWeatherViewController.swift */,
+				FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */,
 				FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */,
 				FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */,
 			);
@@ -292,7 +287,6 @@
 			children = (
 				FD69AEAC2945E79900A4A391 /* DaySummaryWeatherViewController.swift */,
 				FDCA8AED2969830100FF58D0 /* SunMoonView.swift */,
-				FDCA8AEF2969CA6900FF58D0 /* DayNightTableView.swift */,
 				FDCA8AF12969CA9700FF58D0 /* DayNightTableHeaderView.swift */,
 				FDCA8AF3296A10EE00FF58D0 /* DayNightTableViewCell.swift */,
 			);
@@ -453,7 +447,6 @@
 				FDCA8AF8296C96E900FF58D0 /* NetworkManager.swift in Sources */,
 				FD6081E22985798600F8BF27 /* SettingsALConstants.swift in Sources */,
 				FD3E5E3D28EF542900C5CE1F /* ALConstants.swift in Sources */,
-				FD6081E7298580BC00F8BF27 /* CityView.swift in Sources */,
 				FDCA8AFC2974422600FF58D0 /* CurrentWeatherModel.swift in Sources */,
 				FD6081EF2987AD2D00F8BF27 /* CustomDaysButton.swift in Sources */,
 				FD9122A329662E5F00248104 /* HourDetailTableViewCell.swift in Sources */,
@@ -466,7 +459,6 @@
 				FD6081E029854CF500F8BF27 /* PermissionALConstants.swift in Sources */,
 				FD3E5E3928EF4EAD00C5CE1F /* PermissionViewController.swift in Sources */,
 				FD6081DE2985490F00F8BF27 /* SettingsScreenView.swift in Sources */,
-				FDCA8AF02969CA6900FF58D0 /* DayNightTableView.swift in Sources */,
 				FDCA8B04297A3F4D00FF58D0 /* CoreDataHelper.swift in Sources */,
 				FD69AECC2947ADEE00A4A391 /* CitiesPageViewController.swift in Sources */,
 				FD3E5E2428EF4DB100C5CE1F /* ViewController.swift in Sources */,
