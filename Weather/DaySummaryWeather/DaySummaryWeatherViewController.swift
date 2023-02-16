@@ -248,7 +248,7 @@ extension DaySummaryWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UICollectionViewCell.identifier, for: indexPath)
         cell.layer.cornerRadius = 5
-        cell.backgroundColor = UIColor(named: "CustomBlue")
+        cell.backgroundColor = UIColor(named: "MainBackgroundColor")
 
         return cell
     }

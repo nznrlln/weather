@@ -6,16 +6,27 @@
 //
 
 import UIKit
+import CoreData
 
 class TwentyFourHoursDetailWeatherViewController: UIViewController {
 
-    private var city: CityCoreData!
+    private var currentCity: CityCoreData!
+
+    private lazy var frcForecast3h: NSFetchedResultsController<Forecast3hCoreData> = {
+        let request = Forecast3hCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "toCity == %@", currentCity)
+        request.sortDescriptors = [NSSortDescriptor(key: "forecastTime", ascending: true)] //
+
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        return frc
+    }()
 
     private lazy var mainView: TwentyFourScreenView = {
         let view = TwentyFourScreenView()
         view.toAutoLayout()
-//        view.delegate = self
-
+        view.delegate = self
+        view.setupTitle()
+        
         return view
     }()
     
@@ -59,7 +70,7 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
 //    }()
 
     init(city: CityCoreData!) {
-        self.city = city
+        self.currentCity = city
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,11 +78,25 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        setupFRC()
+        super.loadView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         viewInitialSettings()
+    }
+
+    private func setupFRC() {
+        frcForecast3h.delegate = self
+        do {
+            try frcForecast3h.performFetch()
+        } catch {
+            debugPrint(error.localizedDescription)
+        }
     }
 
     private func viewInitialSettings() {
@@ -124,21 +149,6 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
 
 
 
-// MARK: - TwentyFourScreenViewDelegate
-
-//extension TwentyFourHoursDetailWeatherViewController: TwentyFourScreenViewDelegate {
-//    var forecast: Forecast3hCoreData? {
-//        get {
-//            let forecast24: [Forecast3hCoreData] = []
-//            city.f
-//        }
-//        set {
-//
-//        }
-//    }
-//
-//
-//}
     // MARK: - UITableViewDelegate
 
 //}
@@ -163,3 +173,28 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
 //extension TwentyFourHoursDetailWeatherViewController: UITableViewDelegate {
 //
 //}
+
+// MARK: - TwentyFourScreenViewDelegate
+
+extension TwentyFourHoursDetailWeatherViewController: TwentyFourScreenViewDelegate {
+    var cityLabel: String? {
+        guard let city = currentCity.city else { return nil }
+        guard let country = currentCity.country else { return nil }
+
+        return "\(city), \(country)"
+    }
+
+    var forecast: [Forecast3hCoreData]? {
+       return frcForecast3h.fetchedObjects
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension TwentyFourHoursDetailWeatherViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+    }
+
+}

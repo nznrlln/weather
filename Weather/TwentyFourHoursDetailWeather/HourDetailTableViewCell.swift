@@ -51,6 +51,7 @@ class HourDetailTableViewCell: UITableViewCell {
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
         label.text = "Погода"
+        label.lineBreakMode = .byTruncatingMiddle
 
         return label
     }()
@@ -161,12 +162,21 @@ class HourDetailTableViewCell: UITableViewCell {
 
     func setupCell(model: Forecast3hCoreData?) {
         guard let forecast = model else { preconditionFailure() }
-        dateLabel.text = forecast.forecastTime
-        hourLabel.text = forecast.forecastTime
+
+//        "2023-01-17T04:00:00"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let date = dateFormatter.date(from: forecast.forecastTime ?? "2023-01-17T04:00:00")
+
+        dateFormatter.dateFormat = "E dd/MM"
+        dateLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
+
+        dateFormatter.dateFormat = "HH:mm"
+        hourLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
         temperatureLabel.text = "\(forecast.temperature)º"
         predictedWeatherLabel.text = forecast.weatherDescription
         realFeelIndexLabel.text = "По ощущениям \(forecast.feelsLikeTemperature)º"
-        windIndexLabel.text = "\(forecast.windVelocity) м/с \(forecast.windDirection)"
+        windIndexLabel.text = "\(forecast.windVelocity) м/с \(forecast.windDirection ?? "")"
         precipitationIndexLabel.text = "\(forecast.precipitation)%"
         cloudIndexLabel.text = "\(forecast.cloudiness)%"
     }
@@ -214,6 +224,7 @@ class HourDetailTableViewCell: UITableViewCell {
 
             predictedWeatherLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
             predictedWeatherLabel.leadingAnchor.constraint(equalTo: moonImageView.trailingAnchor, constant: 5),
+            predictedWeatherLabel.widthAnchor.constraint(equalToConstant: 150),
 
             realFeelIndexLabel.centerYAnchor.constraint(equalTo: predictedWeatherLabel.centerYAnchor),
             realFeelIndexLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),

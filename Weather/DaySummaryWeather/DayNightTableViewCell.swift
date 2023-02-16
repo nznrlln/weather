@@ -66,8 +66,6 @@ class DayNightTableViewCell: UITableViewCell {
 
             infoDataLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             infoDataLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
-
         ])
     }
 
@@ -94,6 +92,7 @@ class DayNightTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        self.backgroundColor = UIColor(named: "CustomBlue")
     }
 
 }

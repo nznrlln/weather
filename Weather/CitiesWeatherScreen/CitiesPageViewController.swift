@@ -66,12 +66,15 @@ class CitiesPageViewController: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        setupFRC()
+        super.loadView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-
-        setupFRC()
         viewInitialSettings()
     }
 
@@ -206,7 +209,5 @@ extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
         }
         view.layoutIfNeeded()
     }
-
-
 
 }

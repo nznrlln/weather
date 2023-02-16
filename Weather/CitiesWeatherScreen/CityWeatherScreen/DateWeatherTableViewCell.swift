@@ -74,8 +74,8 @@ class DateWeatherTableViewCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.date(from: forecast.forecastDate ?? "2023-01-17")
-        dateFormatter.dateFormat = "dd/MM"
 
+        dateFormatter.dateFormat = "dd/MM"
         dateLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
         weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
         humidityLabel.text = "\(forecast.humidityLevel) %"

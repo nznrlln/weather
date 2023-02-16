@@ -10,11 +10,11 @@ import CoreData
 
 class CityViewController: UIViewController {
 
-    private var city: CityCoreData!
+    private var currentCity: CityCoreData!
 
     private lazy var frcForecast3h: NSFetchedResultsController<Forecast3hCoreData> = {
         let request = Forecast3hCoreData.fetchRequest()
-        request.predicate = NSPredicate(format: "toCity == %@", city)
+        request.predicate = NSPredicate(format: "toCity == %@", currentCity)
         request.sortDescriptors = [NSSortDescriptor(key: "forecastTime", ascending: true)] //
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -23,7 +23,7 @@ class CityViewController: UIViewController {
 
     private lazy var frcForecast1d: NSFetchedResultsController<Forecast1dCoreData> = {
         let request = Forecast1dCoreData.fetchRequest()
-        request.predicate = NSPredicate(format: "toCity == %@", city)
+        request.predicate = NSPredicate(format: "toCity == %@", currentCity)
         request.sortDescriptors = [NSSortDescriptor(key: "forecastDate", ascending: true)] //
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataManager.defaultManager.persistentContainer.viewContext, sectionNameKeyPath: "forecastDate", cacheName: nil)
@@ -119,7 +119,7 @@ class CityViewController: UIViewController {
     }()
 
     init(city: CityCoreData!) {
-        self.city = city
+        self.currentCity = city
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -158,7 +158,7 @@ class CityViewController: UIViewController {
     }
 
     private func setupSubviews() {
-        dayView.setupView(model: city.currentWeather ?? nil)
+        dayView.setupView(model: currentCity.currentWeather ?? nil)
         contentView.addSubviews(
             dayView,
             dayHoursButton,
@@ -214,8 +214,8 @@ class CityViewController: UIViewController {
     }
 
     @objc private func dayHoursButtonTap() {
-//        let vc = TwentyFourHoursDetailWeatherViewController()
-//        self.navigationController!.pushViewController(vc, animated: true)
+        let vc = TwentyFourHoursDetailWeatherViewController(city: currentCity)
+        self.navigationController!.pushViewController(vc, animated: true)
     }
 
     @objc private func numberOfDaysButtonTap() {
@@ -270,8 +270,8 @@ extension CityViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-//        let vc = TwentyFourHoursDetailWeatherViewController()
-//        self.navigationController!.pushViewController(vc, animated: true)
+        let vc = TwentyFourHoursDetailWeatherViewController(city: currentCity)
+        self.navigationController!.pushViewController(vc, animated: true)
     }
 }
 
