@@ -9,10 +9,11 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    private let mainView: SettingsScreenView = {
+    private lazy var mainView: SettingsScreenView = {
         let view = SettingsScreenView()
         view.toAutoLayout()
-
+        view.delegate = self
+        
         return view
     }()
 
@@ -55,4 +56,17 @@ class SettingsViewController: UIViewController {
     }
     */
 
+}
+
+
+// MARK: - SettingsScreenViewDelegate
+
+extension SettingsViewController: SettingsScreenViewDelegate {
+    func confirmSettingsButtonTapAction(_ temperature: Int, _ velocity: Int, _ timeFormat: Int) {
+        UserDefaultSettings.temperatureUnits = TemperatureUnits(rawValue: temperature) ?? .celsius
+        UserDefaultSettings.velocityUnits = VelocityUnits(rawValue: velocity) ?? .meterPerSecond
+        UserDefaultSettings.timeFormat = TimeFormat(rawValue: timeFormat) ?? .fullDay
+
+        print("\(UserDefaultSettings.temperatureUnits), \(UserDefaultSettings.velocityUnits), \(UserDefaultSettings.timeFormat)")
+    }
 }

@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SettingsScreenViewDelegate {
+    func confirmSettingsButtonTapAction(_ temperature: Int,_ velocity: Int,_ timeFormat: Int)
+}
+
 class SettingsScreenView: UIView {
+
+    var delegate: SettingsScreenViewDelegate?
 
     private let backgroundView: UIView = {
         let view = UIView()
@@ -65,13 +71,13 @@ class SettingsScreenView: UIView {
     private let temperatureSegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         control.toAutoLayout()
-        control.insertSegment(withTitle: "℉", at: 0, animated: true)
-        control.insertSegment(withTitle: "℃", at: 1, animated: true)
+        control.insertSegment(withTitle: "℃", at: 0, animated: true)
+        control.insertSegment(withTitle: "℉", at: 1, animated: true)
         control.selectedSegmentTintColor = UIColor(named: "MainAccentColor")
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 1
+        control.selectedSegmentIndex = 0
 
         return control
     }()
@@ -88,13 +94,13 @@ class SettingsScreenView: UIView {
     private let windVelocitySegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         control.toAutoLayout()
-        control.insertSegment(withTitle: "Mi/H", at: 0, animated: true)
-        control.insertSegment(withTitle: "Kh/H", at: 1, animated: true)
+        control.insertSegment(withTitle: "m/s", at:0, animated: true)
+        control.insertSegment(withTitle: "Mi/h", at: 1, animated: true)
         control.selectedSegmentTintColor = UIColor(named: "MainAccentColor")
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 1
+        control.selectedSegmentIndex = 0
 
         return control
     }()
@@ -111,13 +117,13 @@ class SettingsScreenView: UIView {
     private let timeFormatSegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         control.toAutoLayout()
-        control.insertSegment(withTitle: "12", at: 0, animated: true)
-        control.insertSegment(withTitle: "24", at: 1, animated: true)
+        control.insertSegment(withTitle: "24", at: 0, animated: true)
+        control.insertSegment(withTitle: "12", at: 1, animated: true)
         control.selectedSegmentTintColor = UIColor(named: "MainAccentColor")
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 1
+        control.selectedSegmentIndex = 0
 
         return control
     }()
@@ -134,24 +140,25 @@ class SettingsScreenView: UIView {
     private let notificationsStateSegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         control.toAutoLayout()
-        control.insertSegment(withTitle: "On", at: 0, animated: true)
-        control.insertSegment(withTitle: "Off", at: 1, animated: true)
+        control.insertSegment(withTitle: "Off", at: 0, animated: true)
+        control.insertSegment(withTitle: "On", at: 1, animated: true)
         control.selectedSegmentTintColor = UIColor(named: "MainAccentColor")
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 1
+        control.selectedSegmentIndex = 0
 
         return control
     }()
 
-    private let confirmSettingsButton: UIButton = {
+    private lazy var confirmSettingsButton: UIButton = {
         let button = UIButton()
         button.toAutoLayout()
         button.backgroundColor = UIColor(named: "ButtonColor")
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
         button.setTitle("Установить", for: .normal)
+        button.addTarget(self, action: #selector(confirmSettingsButtonTap), for: .touchUpInside)
 
         return button
     }()
@@ -257,6 +264,13 @@ class SettingsScreenView: UIView {
             confirmSettingsButton.heightAnchor.constraint(equalToConstant: SettingsALConstants.settingsConfirmButtonHeight)
             
         ])
+    }
+
+    @objc private func confirmSettingsButtonTap() {
+        let temperature = temperatureSegmentedControl.selectedSegmentIndex
+        let velocity = windVelocitySegmentedControl.selectedSegmentIndex
+        let timeFormat = timeFormatSegmentedControl.selectedSegmentIndex
+        delegate?.confirmSettingsButtonTapAction(temperature, velocity, timeFormat)
     }
     /*
     // Only override draw() if you perform custom drawing.
