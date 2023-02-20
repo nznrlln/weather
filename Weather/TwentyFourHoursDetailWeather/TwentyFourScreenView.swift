@@ -65,16 +65,6 @@ class TwentyFourScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-//    func setupView(model: CityCoreData?) {
-//        guard let city = model else { preconditionFailure() }
-//        cityLabel.text = "\(city.city), \(city.country)"
-//    }
-//
-//    func updateView(model: [Forecast3hCoreData]?) {
-//        guard let forecast = model else { preconditionFailure() }
-//        hourlyTableView.reloadData()
-//    }
-
     func setupTitle() {
         cityLabel.text = delegate?.cityLabel ?? ""
     }
@@ -82,7 +72,6 @@ class TwentyFourScreenView: UIView {
     private func viewInitialSettings() {
         self.backgroundColor = .white
 
-//        cityLabel.text = delegate?.cityLabel ?? ""
         setupSubviews()
         setupSubviewsLayout()
     }

@@ -21,12 +21,11 @@ class AlertHelper {
             textField.placeholder = "Название города"
         }
 
-        let createAction = UIAlertAction(title: "Добавить", style: .default) { [weak self] action in
+        let createAction = UIAlertAction(title: "Добавить", style: .default) { action in
             if let cityName = alertController.textFields![0].text,
                cityName != "" {
                 NetworkManager.defaultManager.geoRequest(cityName) { geoModel in
                     CoreDataManager.defaultManager.addCityWithWeatherData(geoModel: geoModel)
-//                    CoreDataManager.defaultManager.addCity(geoModel: geoModel)
                 }
             }
         }

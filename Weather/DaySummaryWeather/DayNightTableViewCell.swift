@@ -92,7 +92,6 @@ class DayNightTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        self.backgroundColor = UIColor(named: "CustomBlue")
     }
 
 }

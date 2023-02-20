@@ -43,40 +43,34 @@ class CoreDataManager {
             guard let lon = newCity.longitude else { return }
             guard let lat = newCity.latitude else { return }
 
-            debugPrint("🌼🌼")
             let group = DispatchGroup()
 
-            group.enter()
-            DispatchQueue.main.async {
+            DispatchQueue.global().sync {
+                group.enter()
                 NetworkManager.defaultManager.currentWeatherRequest(lon, lat) { [weak self] weather in
                     self?.updateCurrentWeather(weather: weather, to: newCity) {
                         group.leave()
                     }
                 }
-            }
-            group.wait()
+                group.wait()
 
-            DispatchQueue.main.async {
                 group.enter()
                 NetworkManager.defaultManager.forecast5dBy3hRequest(lon, lat) { [weak self] forecast in
                     self?.updateForecast24h(weather: forecast, to: newCity) {
                         group.leave()
                     }
                 }
-            }
-            group.wait()
+                group.wait()
 
-
-            DispatchQueue.main.async {
                 group.enter()
                 NetworkManager.defaultManager.forecast16dRequest(lon, lat) { [weak self] forecast in
                     self?.updateForecast16d(weather: forecast, to: newCity) {
                         group.leave()
                     }
                 }
+                group.wait()
+                debugPrint("🌼🌼")
             }
-            group.wait()
-
         }
     }
 
@@ -102,29 +96,6 @@ class CoreDataManager {
             }
         }
     }
-
-//    func addCity(geoModel: GeoModel) {
-//        guard let cityLocation = LocationManager.defaultManager.getCoordinates(geoModel) else { return }
-//        guard let cityName = LocationManager.defaultManager.getName(geoModel) else { return }
-//        let exist = cityCheck(name: cityName.city)
-//        if !exist {
-//            persistentContainer.performBackgroundTask { taskContext in
-//                let newCity = CityCoreData(context: taskContext)
-//                newCity.city = cityName.city
-//                newCity.country = cityName.country
-//                newCity.latitude = cityLocation.latitude
-//                newCity.longitude = cityLocation.longitude
-//                do {
-//                    try taskContext.save()
-//                    debugPrint("City added")
-//                    debugPrint(newCity)
-//                } catch {
-//                    debugPrint("🎲 CoreDataError: \(error)")
-//                }
-//            }
-//        }
-//    }
-
 
     func updateCurrentWeather(weather model: CurrentWeatherModel, to city: CityCoreData, completion: @escaping () -> ()) {
         persistentContainer.performBackgroundTask { taskContext in
@@ -155,7 +126,7 @@ class CoreDataManager {
                 newCurrentWeather.airQualityIndexScore = CoreDataHelper.defaultHelper.getAQIScore(from: model.data[0].airQualityIndex)
                 newCurrentWeather.airQualityIndexDescription = CoreDataHelper.defaultHelper.getAQIDescription(from: model.data[0].airQualityIndex)
                 newCurrentWeather.humidityLevel = Int16(model.data[0].humidityLevel)
-                newCurrentWeather.toCity = copyCity 
+                newCurrentWeather.toCity = copyCity
             }
             do {
                 try taskContext.save()
@@ -171,9 +142,8 @@ class CoreDataManager {
             let objectId = city.objectID
             let copyCity = taskContext.object(with: objectId) as! CityCoreData
 
-            copyCity.forecast3h?.forEach({ [weak self] hourForecast in
+            copyCity.forecast3h?.forEach({ hourForecast in
                 taskContext.delete(hourForecast as! Forecast3hCoreData)
-//                self?.removeOutdated24hForecast(forecast: hourForecast as! Forecast3hCoreData, context: taskContext)
             })
 
             for index in 0...7 {
@@ -205,9 +175,8 @@ class CoreDataManager {
         persistentContainer.performBackgroundTask { taskContext in
             let objectId = city.objectID
             let copyCity = taskContext.object(with: objectId) as! CityCoreData
-            copyCity.forecast1d?.forEach({ [weak self] dayForecast in
+            copyCity.forecast1d?.forEach({ dayForecast in
                 taskContext.delete(dayForecast as! Forecast1dCoreData)
-//                self?.removeOutdated16dForecast(forecast: dayForecast as! Forecast1dCoreData, context: taskContext)
             })
             for data in model.data {
                 let new1dWeather = Forecast1dCoreData(context: taskContext)
@@ -263,7 +232,7 @@ class CoreDataManager {
     private func removeOutdated24hForecast(forecast: Forecast3hCoreData, context: NSManagedObjectContext) {
         context.delete(forecast)
         do {
-           try context.save()
+            try context.save()
         } catch {
             debugPrint(error.localizedDescription)
         }
@@ -272,59 +241,10 @@ class CoreDataManager {
     private func removeOutdated16dForecast(forecast: Forecast1dCoreData, context: NSManagedObjectContext) {
         context.delete(forecast)
         do {
-           try context.save()
+            try context.save()
         } catch {
             debugPrint(error.localizedDescription)
         }
     }
-        
-    }
 
-    /*
-
-    lazy var defaultManager = CoreDataManager()
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-         */
-        let container = NSPersistentContainer(name: "Weather")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-     */
-//}
-
+}

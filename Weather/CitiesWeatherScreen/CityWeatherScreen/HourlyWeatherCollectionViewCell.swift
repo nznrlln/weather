@@ -67,19 +67,28 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         temperatureLabel.text = ""
     }
 
-    private func cellInitialSetting() {
-//        self.contentView.backgroundColor = .blue
+    func setHighlightedState() {
+        self.backgroundColor = UIColor(named: "MainAccentColor")
+        hourLabel.textColor = .white
+        temperatureLabel.textColor = .white
+    }
 
+    func setDeselectedState() {
+        self.backgroundColor = .white
+        hourLabel.textColor = .black
+        temperatureLabel.textColor = .black
+    }
+
+    private func cellInitialSetting() {
         setupSubviews()
         setupSubviewsLayout()
     }
 
     private func setupSubviews() {
-        contentView.layer.cornerRadius = 22
-        contentView.layer.borderWidth = 0.5
-        contentView.layer.borderColor = UIColor(named: "BorderColor")?.cgColor
-        contentView.clipsToBounds = true
-
+        self.layer.cornerRadius = 22
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor(named: "BorderColor")?.cgColor
+        self.clipsToBounds = true
 
         contentView.addSubviews(hourLabel, weatherImageView, temperatureLabel)
     }

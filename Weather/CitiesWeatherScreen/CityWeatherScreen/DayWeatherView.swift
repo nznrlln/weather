@@ -198,7 +198,10 @@ class DayWeatherView: UIView {
         uvLabel.text = "\(currentWeather.uvIndex)"
         windVelocityLabel.text = "\(currentWeather.windVelocity) м/с"
         humidityLabel.text = "\(currentWeather.humidityLevel) %"
-//        currentTimeDateLabel.text =
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm, E dd MMMM"
+        currentTimeDateLabel.text = dateFormatter.string(from: Date())
     }
 
     private func setupSubviews() {
@@ -287,34 +290,5 @@ class DayWeatherView: UIView {
 // An empty implementation adversely affects performance during animation.
 override func draw(_ rect: CGRect) {
     // Drawing code
-
-//        let bezierPath = UIBezierPath()
-//        let startPoint = CGPoint(x: self.bounds.minX + 31, y: self.bounds.maxY - 72)
-//        let midPoint = CGPoint(x: self.bounds.width / 2, y: self.bounds.minY + 17)
-//        let endPoint = CGPoint(x: self.bounds.maxX - 31, y: self.bounds.maxY - 72)
-//
-////        let leftPoint = CGPoint(x: 31, y: self.bounds.minY + 17)
-////        let rightPoint = CGPoint(x: self.bounds.maxX - 31, y: self.bounds.minY + 17)
-//
-//        // 0.25*(startPoint.x, startPoint.y) + 0.5(midPoint.x, midPoint.y) + 0.25*
-//        let leftPoint = CGPoint(x:  self.bounds.maxX / 10, y: self.bounds.minY + 20 )
-//        let rightPoint = CGPoint(x: self.bounds.maxX - self.bounds.maxX / 10, y: self.bounds.minY + 20)
-//
-//        bezierPath.move(to: startPoint)
-//        bezierPath.addQuadCurve(to: midPoint, controlPoint: leftPoint)
-//        bezierPath.addQuadCurve(to: endPoint, controlPoint: rightPoint)
-//
-//
-////        bezierPath.addCurve(to: endPoint, controlPoint1: leftPoint, controlPoint2: rightPoint)
-////        bezierPath.addCurve(to: endPoint, controlPoint1: rightPoint, controlPoint2: rightPoint)
-//        UIColor.yellow.setStroke()
-//        bezierPath.lineWidth = 5
-//        bezierPath.stroke()
-
-
-//        let path = UIBezierPath(arcCenter: CGPoint(x: self.bounds.maxX / 2, y: self.bounds.maxY - 72), radius: self.bounds.maxX / 2 - 32, startAngle: -CGFloat.pi, endAngle: 0, clockwise: true)
-//        UIColor.yellow.setStroke()
-//        path.lineWidth = 5
-//        path.stroke()
 }
 */

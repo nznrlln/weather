@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DB841EB6BE6D8C1CA1ABD572 /* Pods_Weather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A43D412F7E4FFA31D8AC5B /* Pods_Weather.framework */; };
+		FD14CF96299E241000B5E13B /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF95299E241000B5E13B /* DateCollectionViewCell.swift */; };
+		FD14CF98299E64A200B5E13B /* DaySummaryScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF97299E64A200B5E13B /* DaySummaryScreenView.swift */; };
 		FD3E5E2028EF4DB100C5CE1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E1F28EF4DB100C5CE1F /* AppDelegate.swift */; };
 		FD3E5E2228EF4DB100C5CE1F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E2128EF4DB100C5CE1F /* SceneDelegate.swift */; };
 		FD3E5E2428EF4DB100C5CE1F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E2328EF4DB100C5CE1F /* ViewController.swift */; };
@@ -68,6 +70,8 @@
 		72FBB2D8BF11BE39C7AEB62D /* Pods-Weather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather.release.xcconfig"; path = "Target Support Files/Pods-Weather/Pods-Weather.release.xcconfig"; sourceTree = "<group>"; };
 		75A43D412F7E4FFA31D8AC5B /* Pods_Weather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Weather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D696C563EBFE1321A85BFBC3 /* Pods-Weather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather.debug.xcconfig"; path = "Target Support Files/Pods-Weather/Pods-Weather.debug.xcconfig"; sourceTree = "<group>"; };
+		FD14CF95299E241000B5E13B /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		FD14CF97299E64A200B5E13B /* DaySummaryScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryScreenView.swift; sourceTree = "<group>"; };
 		FD3E5E1C28EF4DB100C5CE1F /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3E5E1F28EF4DB100C5CE1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD3E5E2128EF4DB100C5CE1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -186,14 +190,14 @@
 				FD3E5E3028EF4DB200C5CE1F /* Info.plist */,
 				FD3E5E3C28EF542900C5CE1F /* ALConstants.swift */,
 				FDCA8B02297A3DBD00FF58D0 /* CoreData */,
-				FD6081E329857FB900F8BF27 /* LocationManager */,
 				FD6081DA298538DF00F8BF27 /* PermissionScreen */,
 				FD69AEAB29450D4000A4A391 /* Settings Page */,
 				FD6081E429857FE100F8BF27 /* CitiesWeatherScreen */,
-				FD69AECA29464F1F00A4A391 /* Fonts */,
 				FD9122A429662E9600248104 /* TwentyFourHoursDetailWeather */,
 				FD9122A529662EFA00248104 /* DaySummaryWeather */,
+				FD6081E329857FB900F8BF27 /* LocationManager */,
 				FDCA8AFD2976511600FF58D0 /* Network */,
+				FD69AECA29464F1F00A4A391 /* Fonts */,
 				FD6081D8297F13F300F8BF27 /* UserDefaultSettings.swift */,
 				FD6081E8298582BA00F8BF27 /* AlertHelper.swift */,
 				FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */,
@@ -234,8 +238,8 @@
 			children = (
 				FD69AECD294F2E2C00A4A391 /* CityViewController.swift */,
 				FD69AECF294F382400A4A391 /* DayWeatherView.swift */,
-				FD91229E2963698F00248104 /* DateWeatherTableViewCell.swift */,
 				FD91229C2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift */,
+				FD91229E2963698F00248104 /* DateWeatherTableViewCell.swift */,
 			);
 			path = CityWeatherScreen;
 			sourceTree = "<group>";
@@ -275,8 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				FD9122A62966337D00248104 /* TwentyFourHoursDetailWeatherViewController.swift */,
-				FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */,
 				FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */,
+				FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */,
 				FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */,
 			);
 			path = TwentyFourHoursDetailWeather;
@@ -286,9 +290,11 @@
 			isa = PBXGroup;
 			children = (
 				FD69AEAC2945E79900A4A391 /* DaySummaryWeatherViewController.swift */,
+				FD14CF97299E64A200B5E13B /* DaySummaryScreenView.swift */,
 				FDCA8AED2969830100FF58D0 /* SunMoonView.swift */,
 				FDCA8AF12969CA9700FF58D0 /* DayNightTableHeaderView.swift */,
 				FDCA8AF3296A10EE00FF58D0 /* DayNightTableViewCell.swift */,
+				FD14CF95299E241000B5E13B /* DateCollectionViewCell.swift */,
 			);
 			path = DaySummaryWeather;
 			sourceTree = "<group>";
@@ -449,6 +455,7 @@
 				FD3E5E3D28EF542900C5CE1F /* ALConstants.swift in Sources */,
 				FDCA8AFC2974422600FF58D0 /* CurrentWeatherModel.swift in Sources */,
 				FD6081EF2987AD2D00F8BF27 /* CustomDaysButton.swift in Sources */,
+				FD14CF98299E64A200B5E13B /* DaySummaryScreenView.swift in Sources */,
 				FD9122A329662E5F00248104 /* HourDetailTableViewCell.swift in Sources */,
 				FD3E5E2A28EF4DB100C5CE1F /* Weather.xcdatamodeld in Sources */,
 				FD6081DC2985392900F8BF27 /* PermissionScreenView.swift in Sources */,
@@ -476,6 +483,7 @@
 				FD91229F2963698F00248104 /* DateWeatherTableViewCell.swift in Sources */,
 				FD69AEAA2945099F00A4A391 /* SettingsViewController.swift in Sources */,
 				FD6081D9297F13F300F8BF27 /* UserDefaultSettings.swift in Sources */,
+				FD14CF96299E241000B5E13B /* DateCollectionViewCell.swift in Sources */,
 				FDCA8AFA296E912100FF58D0 /* GeoModel.swift in Sources */,
 				FDCA8AF4296A10EE00FF58D0 /* DayNightTableViewCell.swift in Sources */,
 				FD69AECE294F2E2C00A4A391 /* CityViewController.swift in Sources */,

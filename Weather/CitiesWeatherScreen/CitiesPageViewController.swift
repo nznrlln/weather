@@ -75,7 +75,23 @@ class CitiesPageViewController: UIPageViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        getLocationWeatherIfPossible()
         viewInitialSettings()
+    }
+
+    private func getLocationWeatherIfPossible() {
+       let status = LocationManager.defaultManager.getPermissionStatus()
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            LocationManager.defaultManager.startLocation()
+            
+            guard let location = LocationManager.defaultManager.getCLCoordinates() else { return }
+            NetworkManager.defaultManager.geoRequest(location.longitude, location.latitude) { geoModel in
+                CoreDataManager.defaultManager.addCityWithWeatherData(geoModel: geoModel)
+            }
+        default:
+            return
+        }
     }
 
     private func setupFRC() {
@@ -125,7 +141,9 @@ class CitiesPageViewController: UIPageViewController {
 
             for city in cities {
                 let vc = CityViewController(city: city)
-                addedCitiesVC.append(vc)
+                if !addedCitiesVC.contains(vc) {
+                    addedCitiesVC.append(vc)
+                }
             }
             debugPrint("🌞🌞🌞\(addedCitiesVC.count)")
             self.setViewControllers([addedCitiesVC[0]], direction: .forward, animated: true)
@@ -202,8 +220,12 @@ extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 //        updateAddedCities()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            if let newCity = anObject as? CityCoreData {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            if let newCity = anObject as? CityCoreData,
+               newCity.currentWeather != nil,
+               newCity.forecast3h != nil,
+               newCity.forecast1d != nil {
                 self?.updateAddedCities()
             }
         }

@@ -122,7 +122,7 @@ class DateWeatherTableViewCell: UITableViewCell {
 
             currentWeatherLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 19),
             currentWeatherLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 66),
-            currentWeatherLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -60),
+            currentWeatherLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -70),
             currentWeatherLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -18),
 
             tempRangeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 17),

@@ -51,7 +51,7 @@ class NetworkManager {
         urlComponents.path = "/1.x"
         urlComponents.queryItems = [
             URLQueryItem(name: "apikey", value: geoKey),
-            URLQueryItem(name: "geocode", value: lon + lat),
+            URLQueryItem(name: "geocode", value: "\(lon),\(lat)"),
             URLQueryItem(name: "kind", value: "locality"),
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "results", value: "1"),
@@ -169,62 +169,3 @@ class NetworkManager {
 
 }
 
-/*
- import Foundation
-
- let headers = [
-     "X-RapidAPI-Key": "31cd180094msheb5e6fc204d8e5ap125d5ejsn6610bfc143e8",
-     "X-RapidAPI-Host": "weatherbit-v1-mashape.p.rapidapi.com"
- ]
-
- let request = NSMutableURLRequest(url: NSURL(string: "https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=38.5&lat=-78.5")! as URL,
-                                         cachePolicy: .useProtocolCachePolicy,
-                                     timeoutInterval: 10.0)
- request.httpMethod = "GET"
- request.allHTTPHeaderFields = headers
-
- let session = URLSession.shared
- let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-     if (error != nil) {
-         print(error)
-     } else {
-         let httpResponse = response as? HTTPURLResponse
-         print(httpResponse)
-     }
- })
-
- dataTask.resume()
- */
-
-/*
- Printing description of urlRequest:
- ▿ http://weatherbit-v1-mashape.p.rapidapi.com/current?lon=38.5&lat=-78.5&units=metric&lang=ru
-   ▿ url : Optional<URL>
-     ▿ some : http://weatherbit-v1-mashape.p.rapidapi.com/current?lon=38.5&lat=-78.5&units=metric&lang=ru
-       - _url : http://weatherbit-v1-mashape.p.rapidapi.com/current?lon=38.5&lat=-78.5&units=metric&lang=ru
-   - cachePolicy : 0
-   - timeoutInterval : 10.0
-   - mainDocumentURL : nil
-   - networkServiceType : __C.NSURLRequestNetworkServiceType
-   - allowsCellularAccess : true
-   ▿ httpMethod : Optional<String>
-     - some : "GET"
-   ▿ allHTTPHeaderFields : Optional<Dictionary<String, String>>
-     ▿ some : 2 elements
-       ▿ 0 : 2 elements
-         - key : "X-RapidAPI-Key"
-         - value : "31cd180094msheb5e6fc204d8e5ap125d5ejsn6610bfc143e8"
-       ▿ 1 : 2 elements
-         - key : "X-RapidAPI-Host"
-         - value : "weatherbit-v1-mashape.p.rapidapi.com"
-   - httpBody : nil
-   - httpBodyStream : nil
-   - httpShouldHandleCookies : true
-   - httpShouldUsePipelining : false
- (lldb)
- */
-
-/*
- Printing description of request:
- <NSMutableURLRequest: 0x600001aa83c0> { URL: https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=38.5&lat=-78.5&units=metric&lang=ru }
- */

@@ -54,7 +54,7 @@ class CityViewController: UIViewController {
         return view
     }()
 
-    private let dayHoursButton: UIButton = {
+    private lazy var dayHoursButton: UIButton = {
         let button = UIButton()
         button.toAutoLayout()
         button.setAttributedTitle(
@@ -78,6 +78,7 @@ class CityViewController: UIViewController {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.toAutoLayout()
+        collectionView.showsHorizontalScrollIndicator = false
 
         collectionView.register(
             HourlyWeatherCollectionViewCell.self,
@@ -98,7 +99,7 @@ class CityViewController: UIViewController {
         return label
     }()
 
-    private let numberOfDaysButton: CustomDaysButton = {
+    private lazy var numberOfDaysButton: CustomDaysButton = {
         let button = CustomDaysButton()
         button.toAutoLayout()
         button.addTarget(self, action: #selector(numberOfDaysButtonTap), for: .touchUpInside)
@@ -137,6 +138,13 @@ class CityViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         viewInitialSettings()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.title = "\(currentCity.city ?? ""), \(currentCity.country ?? "")"
+        self.navigationController!.navigationBar.topItem!.title = self.title
     }
 
     private func setupFRC() {
@@ -239,13 +247,6 @@ extension CityViewController: UICollectionViewDataSource {
             cell.setupCell(model: frcForecast3h.object(at: indexPath))
         }
 
-//        if frcForecast3h.fetchedObjects == nil {
-//            return cell
-//        } else {
-//            cell.setupCell(model: frcForecast3h.object(at: indexPath))
-//            return cell
-//        }
-
         return cell
     }
 
@@ -269,10 +270,24 @@ extension CityViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
+        let cell = collectionView.cellForItem(at: indexPath) as! HourlyWeatherCollectionViewCell
         let vc = TwentyFourHoursDetailWeatherViewController(city: currentCity)
         self.navigationController!.pushViewController(vc, animated: true)
+        collectionView.deselectItem(at: indexPath, animated: true)
+        cell.setDeselectedState()
     }
+
+    // почему то никогда не вызывается
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! HourlyWeatherCollectionViewCell
+        cell.setDeselectedState()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! HourlyWeatherCollectionViewCell
+        cell.setHighlightedState()
+    }
+
 }
 
 
@@ -296,12 +311,6 @@ extension CityViewController: UITableViewDataSource {
            !objects.isEmpty {
             cell.setupCell(model: frcForecast1d.object(at: indexPath))
         }
-
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-//            if self?.frcForecast1d.fetchedObjects != nil {
-//                cell.setupCell(model: self?.frcForecast1d.object(at: indexPath))
-//            }
-//        }
 
         return cell
     }
@@ -331,7 +340,7 @@ extension CityViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vc = DaySummaryWeatherViewController()
+        let vc = DaySummaryWeatherViewController(city: currentCity, date: frcForecast1d.object(at: indexPath).forecastDate)
         self.navigationController!.pushViewController(vc, animated: true)
     }
 }

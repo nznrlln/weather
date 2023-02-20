@@ -23,22 +23,19 @@ class LocationManager {
         if currentStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         }
-//        switch currentStatus {
-//        case .notDetermined:
-//        case .authorizedAlways, .authorizedWhenInUse:
-//            locationManager.desiredAccuracy = 50
-//            locationManager.startUpdatingLocation()
-////            mapView.showsUserLocation = true
-////            updateCurrentArea()
-//        case .restricted:
-//            debugPrint("Navigation isn't allowed.")
-//        case .denied:
-//            locationManager.stopUpdatingLocation()
-////            mapView.showsUserLocation = false
-//            debugPrint("Allow location tracking in settings.")
-//        @unknown default:
-//            preconditionFailure("Unknown error")
-//        }
+    }
+
+    func startLocation() {
+        locationManager.desiredAccuracy = 50
+        locationManager.startUpdatingLocation()
+    }
+
+    func getCLCoordinates() -> (longitude: String, latitude: String)? {
+        guard let coordinates = locationManager.location?.coordinate else { return nil }
+        let lon = coordinates.longitude
+        let lat = coordinates.latitude
+
+        return (String(lon), String(lat))
     }
 
     func getCoordinates(_ geoModel: GeoModel) -> (longitude: String, latitude: String)? {
@@ -70,3 +67,11 @@ class LocationManager {
 }
 
 
+//// MARK: - CLLocationManagerDelegate
+//
+//extension LocationManager: CLLocationManagerDelegate {
+//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+//        getPermissionStatus()
+//    }
+//
+//}

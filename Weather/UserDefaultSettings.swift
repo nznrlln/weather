@@ -56,7 +56,4 @@ struct UserDefaultSettings {
 
     // храниние статуса уведомлений
 
-
-//    static var service: String = "niyaz.FileManager"
-//    static var username: String = "test"
 }

@@ -61,7 +61,6 @@ class DayNightTableHeaderView: UIView {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Medium", size: 18)
-        label.text = "05:19"
 
         return label
     }()
@@ -75,6 +74,18 @@ class DayNightTableHeaderView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupView(model: Forecast1dCoreData?) {
+        guard let forecast = model else { preconditionFailure() }
+
+        weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
+        weatherLabel.text = "\(forecast.weatherDescription ?? "")"
+        if dayState == .day {
+            temperatureLabel.text = "\(forecast.temperatureMax)"
+        } else {
+            temperatureLabel.text = "\(forecast.temperatureMin)"
+        }
     }
 
     private func viewInitialSettings() {
@@ -98,6 +109,8 @@ class DayNightTableHeaderView: UIView {
 
             stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            stackView.heightAnchor.constraint(equalToConstant: 37),
+            stackView.widthAnchor.constraint(equalToConstant: 72),
 
             weatherLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             weatherLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),

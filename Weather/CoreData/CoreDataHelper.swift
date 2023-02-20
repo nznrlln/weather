@@ -17,7 +17,7 @@ final class CoreDataHelper {
         let dateFormatter = DateFormatter()
         // в перспективе привязать к часовому поясу конретного города
         dateFormatter.timeZone = .current
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         let localDate = dateFormatter.string(from: date)
 
         return localDate
@@ -46,17 +46,17 @@ final class CoreDataHelper {
     }
 
     func getAQIScore(from aqi: Int) -> String {
-        if (0...50).contains(aqi) {
+        if (0...20).contains(aqi) {
             return "Хорошо"
-        } else if (51...100).contains(aqi) {
+        } else if (21...40).contains(aqi) {
             return "Удовлетворительно"
-        } else if (101...150).contains(aqi) {
+        } else if (41...60).contains(aqi) {
             return "Плохо для чувствительных"
-        } else if (151...200).contains(aqi) {
+        } else if (61...80).contains(aqi) {
             return "Плохо"
-        } else if (201...300).contains(aqi) {
+        } else if (81...90).contains(aqi) {
             return "Очень плохо"
-        } else if (301...500).contains(aqi) {
+        } else if (91...100).contains(aqi) {
             return "Опасно"
         } else {
             return "Out of range"
@@ -64,17 +64,17 @@ final class CoreDataHelper {
     }
 
     func getAQIDescription(from aqi: Int) -> String {
-        if (0...50).contains(aqi) {
+        if (0...20).contains(aqi) {
             return "Качество воздуха считается удовлетворительным, и загрязнение воздуха представляется незначительным в пределах нормы."
-        } else if (51...100).contains(aqi) {
+        } else if (21...40).contains(aqi) {
             return "Качество воздуха является приемлемым, однако некоторые загрязнители могут представлять опасность для людей, являющихся особо чувствительными к загрязнению воздуха."
-        } else if (101...150).contains(aqi) {
+        } else if (41...60).contains(aqi) {
             return "Может оказывать эффект на особо чувствительную группу лиц. На среднего представителя не оказывает видимого воздействия."
-        } else if (151...200).contains(aqi) {
+        } else if (61...80).contains(aqi) {
             return "Каждый может начать испытывать последствия для своего здоровья; особо чувствительные люди могут испытывать более серьезные последствия."
-        } else if (201...300).contains(aqi) {
+        } else if (81...90).contains(aqi) {
             return "Опасность для здоровья от чрезвычайных условий. Это отразится, вероятно, на всем населении."
-        } else if (301...500).contains(aqi) {
+        } else if (91...100).contains(aqi) {
             return "Опасность для здоровья: каждый человек может испытывать более серьезные последствия для здоровья."
         } else {
             return "Out of range"
@@ -82,18 +82,18 @@ final class CoreDataHelper {
     }
 
     func getAQIColor(from aqi: Int) -> UIColor {
-        if (0...50).contains(aqi) {
+        if (0...20).contains(aqi) {
             return .systemGreen
-        } else if (51...100).contains(aqi) {
+        } else if (21...40).contains(aqi) {
             return .systemYellow
-        } else if (101...150).contains(aqi) {
+        } else if (41...60).contains(aqi) {
             return .systemOrange
-        } else if (151...200).contains(aqi) {
+        } else if (61...80).contains(aqi) {
             return .systemRed
-        } else if (201...300).contains(aqi) {
+        } else if (81...90).contains(aqi) {
+            return .systemPink
+        } else if (91...100).contains(aqi) {
             return .systemPurple
-        } else if (301...500).contains(aqi) {
-            return .systemBrown
         } else {
             return .white
         }
@@ -119,7 +119,65 @@ final class CoreDataHelper {
             return UIImage(named: "cloudy") ?? UIImage()
         }
         
-        return UIImage()
+        return UIImage(named: "noWeather") ?? UIImage()
     }
 
 }
+
+
+// в документах к api сообщается, что оценка качетсва воздуха проходит по шкале от 0 до 500, но для "Дели, Индия" выдается показатель 67, что соответсвует показателю "удовлетворительно", а это один из городов с самым грязным воздухом. Поэтому новая шкала (не факт что соответсвует действительности". Но на всякий случай сохранил исходник ниже
+/*
+ func getAQIScore(from aqi: Int) -> String {
+     if (0...50).contains(aqi) {
+         return "Хорошо"
+     } else if (51...100).contains(aqi) {
+         return "Удовлетворительно"
+     } else if (101...150).contains(aqi) {
+         return "Плохо для чувствительных"
+     } else if (151...200).contains(aqi) {
+         return "Плохо"
+     } else if (201...300).contains(aqi) {
+         return "Очень плохо"
+     } else if (301...500).contains(aqi) {
+         return "Опасно"
+     } else {
+         return "Out of range"
+     }
+ }
+
+ func getAQIDescription(from aqi: Int) -> String {
+     if (0...50).contains(aqi) {
+         return "Качество воздуха считается удовлетворительным, и загрязнение воздуха представляется незначительным в пределах нормы."
+     } else if (51...100).contains(aqi) {
+         return "Качество воздуха является приемлемым, однако некоторые загрязнители могут представлять опасность для людей, являющихся особо чувствительными к загрязнению воздуха."
+     } else if (101...150).contains(aqi) {
+         return "Может оказывать эффект на особо чувствительную группу лиц. На среднего представителя не оказывает видимого воздействия."
+     } else if (151...200).contains(aqi) {
+         return "Каждый может начать испытывать последствия для своего здоровья; особо чувствительные люди могут испытывать более серьезные последствия."
+     } else if (201...300).contains(aqi) {
+         return "Опасность для здоровья от чрезвычайных условий. Это отразится, вероятно, на всем населении."
+     } else if (301...500).contains(aqi) {
+         return "Опасность для здоровья: каждый человек может испытывать более серьезные последствия для здоровья."
+     } else {
+         return "Out of range"
+     }
+ }
+
+ func getAQIColor(from aqi: Int) -> UIColor {
+     if (0...50).contains(aqi) {
+         return .systemGreen
+     } else if (51...100).contains(aqi) {
+         return .systemYellow
+     } else if (101...150).contains(aqi) {
+         return .systemOrange
+     } else if (151...200).contains(aqi) {
+         return .systemRed
+     } else if (201...300).contains(aqi) {
+         return .systemPurple
+     } else if (301...500).contains(aqi) {
+         return .systemBrown
+     } else {
+         return .white
+     }
+ }
+ */

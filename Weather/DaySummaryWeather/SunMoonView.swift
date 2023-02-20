@@ -93,14 +93,28 @@ class SunMoonView: UIView {
 
     func setupView(model: Forecast1dCoreData?) {
         guard let forecast = model else { preconditionFailure() }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
 
         switch viewState {
         case .sun:
-            riseTimeLabel.text = forecast.sunriseTime
-            setTimeLabel.text = forecast.sunsetTime
+            let rise = dateFormatter.date(from: forecast.sunriseTime ?? "")
+            let set = dateFormatter.date(from: forecast.sunsetTime ?? "")
+
+            dateFormatter.dateFormat = "HH:mm"
+            riseTimeLabel.text = dateFormatter.string(from: rise ?? .distantPast)
+            setTimeLabel.text = dateFormatter.string(from: set ?? .distantPast)
+            durationLabel.text = getDuration(rise: rise ?? .distantPast,
+                                             set: set ?? .distantPast)
         case .moon:
-            riseTimeLabel.text = forecast.moonriseTime
-            setTimeLabel.text = forecast.moonsetTime
+            let rise = dateFormatter.date(from: forecast.moonriseTime ?? "")
+            let set = dateFormatter.date(from: forecast.moonsetTime ?? "")
+
+            dateFormatter.dateFormat = "HH:mm"
+            riseTimeLabel.text = dateFormatter.string(from: rise ?? .distantPast)
+            setTimeLabel.text = dateFormatter.string(from: set ?? .distantPast)
+            durationLabel.text = getDuration(rise: rise ?? .distantPast,
+                                             set: set ?? .distantPast)
         case .none:
             riseTimeLabel.text = ""
             setTimeLabel.text = ""
@@ -163,14 +177,15 @@ class SunMoonView: UIView {
 
     }
 
-
     private func addDashLine(start: CGPoint, end: CGPoint) {
         let  path = UIBezierPath()
 
         path.move(to: start)
         path.addLine(to: end)
 
+        // длина линии 4, длина пробела 4
         let  dashes: [ CGFloat ] = [ 4.0, 4.0 ]
+        // стиль 4/4, блок полос состоит из 1 линии и 1 пробела, начало от точки 2 - середина первой линии
         path.setLineDash(dashes, count: dashes.count, phase: 2.0)
 
         path.lineWidth = 0.3
@@ -179,19 +194,14 @@ class SunMoonView: UIView {
         path.stroke()
     }
 
-//    func addDashedBorder() {
-//            //Create a CAShapeLayer
-//            let shapeLayer = CAShapeLayer()
-//            shapeLayer.strokeColor = UIColor.red.cgColor
-//            shapeLayer.lineWidth = 2
-//            // passing an array with the values [2,3] sets a dash pattern that alternates between a 2-user-space-unit-long painted segment and a 3-user-space-unit-long unpainted segment
-//            shapeLayer.lineDashPattern = [2,3]
-//
-//            let path = CGMutablePath()
-//            path.addLines(between: [CGPoint(x: 0, y: 0),
-//                                    CGPoint(x: self.frame.width, y: 0)])
-//            shapeLayer.path = path
-//            layer.addSublayer(shapeLayer)
-//        }
+    private func getDuration(rise: Date, set: Date) -> String {
+        let duration = set.timeIntervalSince(rise)
+
+        let componentsFormatter = DateComponentsFormatter()
+        componentsFormatter.allowedUnits = [.hour, .minute]
+        componentsFormatter.unitsStyle = .abbreviated
+
+        return "\(componentsFormatter.string(from: duration) ?? "")"
+    }
 
 }
