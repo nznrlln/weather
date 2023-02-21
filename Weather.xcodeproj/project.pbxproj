@@ -10,6 +10,9 @@
 		DB841EB6BE6D8C1CA1ABD572 /* Pods_Weather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A43D412F7E4FFA31D8AC5B /* Pods_Weather.framework */; };
 		FD14CF96299E241000B5E13B /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF95299E241000B5E13B /* DateCollectionViewCell.swift */; };
 		FD14CF98299E64A200B5E13B /* DaySummaryScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF97299E64A200B5E13B /* DaySummaryScreenView.swift */; };
+		FD14CF9A29A3689600B5E13B /* FormatHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF9929A3689600B5E13B /* FormatHelper.swift */; };
+		FD14CF9D29A36A4C00B5E13B /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = FD14CF9C29A36A4C00B5E13B /* Charts */; };
+		FD14CF9F29A3F4A100B5E13B /* WeatherChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD14CF9E29A3F4A100B5E13B /* WeatherChartView.swift */; };
 		FD3E5E2028EF4DB100C5CE1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E1F28EF4DB100C5CE1F /* AppDelegate.swift */; };
 		FD3E5E2228EF4DB100C5CE1F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E2128EF4DB100C5CE1F /* SceneDelegate.swift */; };
 		FD3E5E2428EF4DB100C5CE1F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E5E2328EF4DB100C5CE1F /* ViewController.swift */; };
@@ -72,6 +75,8 @@
 		D696C563EBFE1321A85BFBC3 /* Pods-Weather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather.debug.xcconfig"; path = "Target Support Files/Pods-Weather/Pods-Weather.debug.xcconfig"; sourceTree = "<group>"; };
 		FD14CF95299E241000B5E13B /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		FD14CF97299E64A200B5E13B /* DaySummaryScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryScreenView.swift; sourceTree = "<group>"; };
+		FD14CF9929A3689600B5E13B /* FormatHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatHelper.swift; sourceTree = "<group>"; };
+		FD14CF9E29A3F4A100B5E13B /* WeatherChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherChartView.swift; sourceTree = "<group>"; };
 		FD3E5E1C28EF4DB100C5CE1F /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3E5E1F28EF4DB100C5CE1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD3E5E2128EF4DB100C5CE1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB841EB6BE6D8C1CA1ABD572 /* Pods_Weather.framework in Frameworks */,
+				FD14CF9D29A36A4C00B5E13B /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +207,7 @@
 				FD6081D8297F13F300F8BF27 /* UserDefaultSettings.swift */,
 				FD6081E8298582BA00F8BF27 /* AlertHelper.swift */,
 				FD6081EE2987AD2D00F8BF27 /* CustomDaysButton.swift */,
+				FD14CF9929A3689600B5E13B /* FormatHelper.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -282,6 +289,7 @@
 				FD6081EA298682B700F8BF27 /* TwentyFourScreenView.swift */,
 				FD9122A229662E5F00248104 /* HourDetailTableViewCell.swift */,
 				FD6081EC2986AEFF00F8BF27 /* TwentyFourALConstants.swift */,
+				FD14CF9E29A3F4A100B5E13B /* WeatherChartView.swift */,
 			);
 			path = TwentyFourHoursDetailWeather;
 			sourceTree = "<group>";
@@ -339,6 +347,9 @@
 			dependencies = (
 			);
 			name = Weather;
+			packageProductDependencies = (
+				FD14CF9C29A36A4C00B5E13B /* Charts */,
+			);
 			productName = Weather;
 			productReference = FD3E5E1C28EF4DB100C5CE1F /* Weather.app */;
 			productType = "com.apple.product-type.application";
@@ -367,6 +378,9 @@
 				Base,
 			);
 			mainGroup = FD3E5E1328EF4DB100C5CE1F;
+			packageReferences = (
+				FD14CF9B29A36A4C00B5E13B /* XCRemoteSwiftPackageReference "Charts" */,
+			);
 			productRefGroup = FD3E5E1D28EF4DB100C5CE1F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -460,6 +474,7 @@
 				FD3E5E2A28EF4DB100C5CE1F /* Weather.xcdatamodeld in Sources */,
 				FD6081DC2985392900F8BF27 /* PermissionScreenView.swift in Sources */,
 				FD91229D2958E7C100248104 /* HourlyWeatherCollectionViewCell.swift in Sources */,
+				FD14CF9F29A3F4A100B5E13B /* WeatherChartView.swift in Sources */,
 				FDCA8AEE2969830100FF58D0 /* SunMoonView.swift in Sources */,
 				FDCA8B012976D89F00FF58D0 /* Forecast16dModel.swift in Sources */,
 				FD6081F32987E91000F8BF27 /* NoCityView.swift in Sources */,
@@ -469,6 +484,7 @@
 				FDCA8B04297A3F4D00FF58D0 /* CoreDataHelper.swift in Sources */,
 				FD69AECC2947ADEE00A4A391 /* CitiesPageViewController.swift in Sources */,
 				FD3E5E2428EF4DB100C5CE1F /* ViewController.swift in Sources */,
+				FD14CF9A29A3689600B5E13B /* FormatHelper.swift in Sources */,
 				FD6081E9298582BA00F8BF27 /* AlertHelper.swift in Sources */,
 				FD6081ED2986AEFF00F8BF27 /* TwentyFourALConstants.swift in Sources */,
 				FD3E5E3B28EF51E700C5CE1F /* UIView+Extention.swift in Sources */,
@@ -708,6 +724,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD14CF9B29A36A4C00B5E13B /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = exactVersion;
+				version = 4.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD14CF9C29A36A4C00B5E13B /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD14CF9B29A36A4C00B5E13B /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		FD3E5E2828EF4DB100C5CE1F /* Weather.xcdatamodeld */ = {

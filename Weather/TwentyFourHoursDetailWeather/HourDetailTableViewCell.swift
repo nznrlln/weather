@@ -171,12 +171,12 @@ class HourDetailTableViewCell: UITableViewCell {
         dateFormatter.dateFormat = "E dd/MM"
         dateLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
 
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = FormatHelper.defaultHelper.getLocalizedHours()
         hourLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
-        temperatureLabel.text = "\(forecast.temperature)º"
+        temperatureLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperature))"
         predictedWeatherLabel.text = forecast.weatherDescription
-        realFeelIndexLabel.text = "По ощущениям \(forecast.feelsLikeTemperature)º"
-        windIndexLabel.text = "\(forecast.windVelocity) м/с \(forecast.windDirection ?? "")"
+        realFeelIndexLabel.text = "По ощущениям " + "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.feelsLikeTemperature))" 
+        windIndexLabel.text = "\(FormatHelper.defaultHelper.getLocalizedVelocity(from: forecast.windVelocity)) \(forecast.windDirection ?? "")"
         precipitationIndexLabel.text = "\(forecast.precipitation)%"
         cloudIndexLabel.text = "\(forecast.cloudiness)%"
     }

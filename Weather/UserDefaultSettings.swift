@@ -22,10 +22,14 @@ enum TimeFormat: Int {
     case halfDay = 1
 }
 
+enum NotificationStatus: Int {
+    case off = 0
+    case on = 1
+}
 
 struct UserDefaultSettings {
 
-    static var temperatureUnits: TemperatureUnits {
+    static var temperatureUnit: TemperatureUnits {
         set {
             UserDefaults.standard.set(newValue.rawValue, forKey: "TemperatureUnits")
             UserDefaults.standard.synchronize()
@@ -35,7 +39,7 @@ struct UserDefaultSettings {
         }
     }
 
-    static var velocityUnits: VelocityUnits {
+    static var velocityUnit: VelocityUnits {
         set {
             UserDefaults.standard.set(newValue.rawValue, forKey: "VelocityUnits")
             UserDefaults.standard.synchronize()
@@ -55,7 +59,14 @@ struct UserDefaultSettings {
         }
     }
 
-
-    // храниние статуса уведомлений
+    static var notificationStatus: NotificationStatus {
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: "NotificationStatus")
+            UserDefaults.standard.synchronize()
+        }
+        get {
+            return NotificationStatus(rawValue: UserDefaults.standard.integer(forKey: "NotificationStatus")) ?? .off
+        }
+    }
 
 }

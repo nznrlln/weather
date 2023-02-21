@@ -82,9 +82,9 @@ class DayNightTableHeaderView: UIView {
         weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
         weatherLabel.text = "\(forecast.weatherDescription ?? "")"
         if dayState == .day {
-            temperatureLabel.text = "\(forecast.temperatureMax)"
+            temperatureLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperatureMax))"
         } else {
-            temperatureLabel.text = "\(forecast.temperatureMin)"
+            temperatureLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperatureMin))" 
         }
     }
 

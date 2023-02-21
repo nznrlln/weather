@@ -62,11 +62,15 @@ class SettingsViewController: UIViewController {
 // MARK: - SettingsScreenViewDelegate
 
 extension SettingsViewController: SettingsScreenViewDelegate {
-    func confirmSettingsButtonTapAction(_ temperature: Int, _ velocity: Int, _ timeFormat: Int) {
-        UserDefaultSettings.temperatureUnits = TemperatureUnits(rawValue: temperature) ?? .celsius
-        UserDefaultSettings.velocityUnits = VelocityUnits(rawValue: velocity) ?? .meterPerSecond
+    func confirmSettingsButtonTapAction(_ temperature: Int, _ velocity: Int, _ timeFormat: Int, _ notifications: Int) {
+        UserDefaultSettings.temperatureUnit = TemperatureUnits(rawValue: temperature) ?? .celsius
+        UserDefaultSettings.velocityUnit = VelocityUnits(rawValue: velocity) ?? .meterPerSecond
         UserDefaultSettings.timeFormat = TimeFormat(rawValue: timeFormat) ?? .fullDay
+        UserDefaultSettings.notificationStatus = NotificationStatus(rawValue: notifications) ?? .off
 
-        print("\(UserDefaultSettings.temperatureUnits), \(UserDefaultSettings.velocityUnits), \(UserDefaultSettings.timeFormat)")
+        let alert = AlertHelper.defaultHelper.showSettingsAlert()
+        present(alert, animated: true)
+
+        debugPrint("\(UserDefaultSettings.temperatureUnit), \(UserDefaultSettings.velocityUnit), \(UserDefaultSettings.timeFormat), \(UserDefaultSettings.notificationStatus)")
     }
 }

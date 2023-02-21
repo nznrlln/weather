@@ -192,15 +192,25 @@ class DayWeatherView: UIView {
         }
         sunriseTimeLabel.text = currentWeather.sunriseTime
         sunsetTimeLabel.text = currentWeather.sunsetTime
-        tempRangeLabel.text = "\(currentWeather.temperature - 5)º / \(currentWeather.temperature + 5)º"
-        currentTempLabel.text = "\(currentWeather.temperature)º"
+
+        let minTemp = currentWeather.temperature - 5
+        let maxTemp = currentWeather.temperature + 5
+        tempRangeLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: minTemp))" + "/" + "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: maxTemp))"
+
+        currentTempLabel.text = FormatHelper.defaultHelper.getLocalizedTemperature(from: currentWeather.temperature) 
         weatherPredictionLabel.text = currentWeather.weatherDescription
         uvLabel.text = "\(currentWeather.uvIndex)"
-        windVelocityLabel.text = "\(currentWeather.windVelocity) м/с"
+        windVelocityLabel.text = "\(FormatHelper.defaultHelper.getLocalizedVelocity(from: currentWeather.windVelocity))"
         humidityLabel.text = "\(currentWeather.humidityLevel) %"
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm, E dd MMMM"
+        switch UserDefaultSettings.timeFormat {
+
+        case .fullDay:
+            dateFormatter.dateFormat = "HH:mm, E dd MMMM"
+        case .halfDay:
+            dateFormatter.dateFormat = "hh:mm a, E dd MMMM"
+        }
         currentTimeDateLabel.text = dateFormatter.string(from: Date())
     }
 

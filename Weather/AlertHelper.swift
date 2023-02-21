@@ -45,4 +45,12 @@ class AlertHelper {
         return alertController
     }
 
+    func showSettingsAlert() -> UIAlertController {
+        let alertController = UIAlertController(title: "Настройки", message: "Изменения вступят в силу после перезапуска приложения.\nСпасибо за понимание", preferredStyle: .alert)
+        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        alertController.addAction(closeAction)
+
+        return alertController
+    }
+
 }

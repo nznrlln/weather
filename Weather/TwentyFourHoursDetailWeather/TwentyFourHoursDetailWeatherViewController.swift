@@ -25,7 +25,7 @@ class TwentyFourHoursDetailWeatherViewController: UIViewController {
         let view = TwentyFourScreenView()
         view.toAutoLayout()
         view.delegate = self
-        view.setupTitle()
+        view.setupView()
         
         return view
     }()

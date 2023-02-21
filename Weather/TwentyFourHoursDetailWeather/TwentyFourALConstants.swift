@@ -11,6 +11,9 @@ struct TwentyFourALConstants {
     static let labelTopInset: CGFloat = 15
     static let labelLeadingInset: CGFloat = 48
 
+    static let weatherChartTopInset: CGFloat = 15
+    static let weatherChartHeight: CGFloat = 150
+
     static let tableViewTopInset: CGFloat = 20
     static let tableViewHeight: CGFloat = 800
 }

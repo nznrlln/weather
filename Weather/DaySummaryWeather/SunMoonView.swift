@@ -101,7 +101,7 @@ class SunMoonView: UIView {
             let rise = dateFormatter.date(from: forecast.sunriseTime ?? "")
             let set = dateFormatter.date(from: forecast.sunsetTime ?? "")
 
-            dateFormatter.dateFormat = "HH:mm"
+            dateFormatter.dateFormat = FormatHelper.defaultHelper.getLocalizedHours()
             riseTimeLabel.text = dateFormatter.string(from: rise ?? .distantPast)
             setTimeLabel.text = dateFormatter.string(from: set ?? .distantPast)
             durationLabel.text = getDuration(rise: rise ?? .distantPast,
@@ -110,7 +110,7 @@ class SunMoonView: UIView {
             let rise = dateFormatter.date(from: forecast.moonriseTime ?? "")
             let set = dateFormatter.date(from: forecast.moonsetTime ?? "")
 
-            dateFormatter.dateFormat = "HH:mm"
+            dateFormatter.dateFormat = FormatHelper.defaultHelper.getLocalizedHours()
             riseTimeLabel.text = dateFormatter.string(from: rise ?? .distantPast)
             setTimeLabel.text = dateFormatter.string(from: set ?? .distantPast)
             durationLabel.text = getDuration(rise: rise ?? .distantPast,

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SettingsScreenViewDelegate {
-    func confirmSettingsButtonTapAction(_ temperature: Int,_ velocity: Int,_ timeFormat: Int)
+    func confirmSettingsButtonTapAction(_ temperature: Int,_ velocity: Int,_ timeFormat: Int,_ notifications: Int)
 }
 
 class SettingsScreenView: UIView {
@@ -77,7 +77,13 @@ class SettingsScreenView: UIView {
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 0
+
+        switch UserDefaultSettings.temperatureUnit {
+        case .celsius:
+            control.selectedSegmentIndex = 0
+        case .fahrenheit:
+            control.selectedSegmentIndex = 1
+        }
 
         return control
     }()
@@ -94,13 +100,19 @@ class SettingsScreenView: UIView {
     private let windVelocitySegmentedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         control.toAutoLayout()
-        control.insertSegment(withTitle: "m/s", at:0, animated: true)
-        control.insertSegment(withTitle: "Mi/h", at: 1, animated: true)
+        control.insertSegment(withTitle: "м/с", at:0, animated: true)
+        control.insertSegment(withTitle: "миля/ч", at: 1, animated: true)
         control.selectedSegmentTintColor = UIColor(named: "MainAccentColor")
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 0
+
+        switch UserDefaultSettings.velocityUnit {
+        case .meterPerSecond:
+            control.selectedSegmentIndex = 0
+        case .milesPerHour:
+            control.selectedSegmentIndex = 1
+        }
 
         return control
     }()
@@ -125,6 +137,13 @@ class SettingsScreenView: UIView {
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
         control.selectedSegmentIndex = 0
 
+        switch UserDefaultSettings.timeFormat {
+        case .fullDay:
+            control.selectedSegmentIndex = 0
+        case .halfDay:
+            control.selectedSegmentIndex = 1
+        }
+        
         return control
     }()
 
@@ -146,7 +165,13 @@ class SettingsScreenView: UIView {
         control.backgroundColor = UIColor(named: "MainBackgroundColor")
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         control.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
-        control.selectedSegmentIndex = 0
+
+        switch UserDefaultSettings.notificationStatus {
+        case .off:
+            control.selectedSegmentIndex = 0
+        case .on:
+            control.selectedSegmentIndex = 1
+        }
 
         return control
     }()
@@ -270,7 +295,8 @@ class SettingsScreenView: UIView {
         let temperature = temperatureSegmentedControl.selectedSegmentIndex
         let velocity = windVelocitySegmentedControl.selectedSegmentIndex
         let timeFormat = timeFormatSegmentedControl.selectedSegmentIndex
-        delegate?.confirmSettingsButtonTapAction(temperature, velocity, timeFormat)
+        let notifications = notificationsStateSegmentedControl.selectedSegmentIndex
+        delegate?.confirmSettingsButtonTapAction(temperature, velocity, timeFormat, notifications)
     }
     /*
     // Only override draw() if you perform custom drawing.

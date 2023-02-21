@@ -40,7 +40,13 @@ class TwentyFourScreenView: UIView {
         return label
     }()
 
-    // VIEW ПО ЧАСАМ
+    private let weatherChart: WeatherChartView = {
+        let view = WeatherChartView()
+        view.toAutoLayout()
+        view.backgroundColor = UIColor(named: "MainBackgroundColor")
+
+        return view
+    }()
 
     private lazy var hourlyTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -65,8 +71,9 @@ class TwentyFourScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupTitle() {
+    func setupView() {
         cityLabel.text = delegate?.cityLabel ?? ""
+        weatherChart.setChartData(forecast: delegate?.forecast)
     }
 
     private func viewInitialSettings() {
@@ -77,7 +84,7 @@ class TwentyFourScreenView: UIView {
     }
 
     private func setupSubviews() {
-        contentView.addSubviews(cityLabel, hourlyTableView)
+        contentView.addSubviews(cityLabel, weatherChart, hourlyTableView)
         scrollView.addSubview(contentView)
         self.addSubview(scrollView)
     }
@@ -98,7 +105,12 @@ class TwentyFourScreenView: UIView {
             cityLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: TwentyFourALConstants.labelTopInset),
             cityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: TwentyFourALConstants.labelLeadingInset),
 
-            hourlyTableView.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: TwentyFourALConstants.tableViewTopInset),
+            weatherChart.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: TwentyFourALConstants.weatherChartTopInset),
+            weatherChart.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            weatherChart.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            weatherChart.heightAnchor.constraint(equalToConstant: TwentyFourALConstants.weatherChartHeight),
+
+            hourlyTableView.topAnchor.constraint(equalTo: weatherChart.bottomAnchor, constant: TwentyFourALConstants.tableViewTopInset),
             hourlyTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             hourlyTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             hourlyTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
@@ -137,5 +149,14 @@ extension TwentyFourScreenView: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension TwentyFourScreenView: UITableViewDelegate {
-
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: .zero)
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        0
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }

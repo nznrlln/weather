@@ -13,6 +13,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Rubik-Regular", size: 14)
+        label.lineBreakMode = .byCharWrapping
         label.text = "12:00"
 
         return label
@@ -53,10 +54,10 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         let date = dateFormatter.date(from: forecast.forecastTime ?? "2023-01-17T04:00:00")
 
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = FormatHelper.defaultHelper.getLocalizedHours()
         hourLabel.text = dateFormatter.string(from: date ?? Date.distantPast)
         weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
-        temperatureLabel.text = "\(forecast.temperature)"
+        temperatureLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperature))" 
     }
 
     override func prepareForReuse() {
@@ -97,6 +98,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             hourLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             hourLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            hourLabel.widthAnchor.constraint(equalToConstant: 38),
 
             weatherImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 37),
             weatherImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 13),

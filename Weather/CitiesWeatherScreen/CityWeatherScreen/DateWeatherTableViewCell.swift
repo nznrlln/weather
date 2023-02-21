@@ -80,7 +80,9 @@ class DateWeatherTableViewCell: UITableViewCell {
         weatherImageView.image = CoreDataHelper.defaultHelper.getWeatherImage(from: Int(forecast.weatherCode))
         humidityLabel.text = "\(forecast.humidityLevel) %"
         currentWeatherLabel.text = forecast.weatherDescription
-        tempRangeLabel.text = "\(forecast.temperatureMin)º/\(forecast.temperatureMax)º"
+        tempRangeLabel.text = "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperatureMin))" + "/" + "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: forecast.temperatureMax))" 
+//        currentTempLabel.text = FormatHelper.defaultHelper.getLocalizedTemperature(from: currentWeather.temperature)
+
     }
 
     override func prepareForReuse() {

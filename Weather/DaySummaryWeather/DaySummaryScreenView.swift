@@ -359,7 +359,7 @@ extension DaySummaryScreenView: UITableViewDataSource {
             } else if indexPath.row == 1 {
                 if let velocity = delegate?.currentForecast?.windVelocity,
                    let direction = delegate?.currentForecast?.windDirection {
-                    cell.setupCell("wind", "Ветер", "\(velocity) м/с \(direction)")
+                    cell.setupCell("wind", "Ветер", "\(FormatHelper.defaultHelper.getLocalizedVelocity(from: velocity)) \(direction)")
                 }
             } else if indexPath.row == 2 {
                 if let uv = delegate?.currentForecast?.uvIndex {
