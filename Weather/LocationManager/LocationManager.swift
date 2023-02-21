@@ -8,7 +8,13 @@
 import Foundation
 import CoreLocation
 
-class LocationManager {
+protocol LocationManagerDelegate {
+    func didChangeAuthorizationAction()
+}
+
+class LocationManager: NSObject {
+
+    var vcDelegate: LocationManagerDelegate?
 
     static let defaultManager = LocationManager()
     private let locationManager = CLLocationManager()
@@ -26,6 +32,7 @@ class LocationManager {
     }
 
     func startLocation() {
+        locationManager.delegate = self
         locationManager.desiredAccuracy = 50
         locationManager.startUpdatingLocation()
     }
@@ -67,11 +74,11 @@ class LocationManager {
 }
 
 
-//// MARK: - CLLocationManagerDelegate
-//
-//extension LocationManager: CLLocationManagerDelegate {
-//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//        getPermissionStatus()
-//    }
-//
-//}
+// MARK: - CLLocationManagerDelegate
+
+extension LocationManager: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        vcDelegate?.didChangeAuthorizationAction()
+    }
+
+}

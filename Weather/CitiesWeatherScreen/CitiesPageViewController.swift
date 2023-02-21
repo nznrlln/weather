@@ -10,6 +10,8 @@ import CoreData
 
 class CitiesPageViewController: UIPageViewController {
 
+    private let locationManager = LocationManager.defaultManager
+
     private var frc: NSFetchedResultsController<CityCoreData> = {
         let request = CityCoreData.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "city", ascending: true)] // в алфавитном порядке во названию города
@@ -68,6 +70,7 @@ class CitiesPageViewController: UIPageViewController {
 
     override func loadView() {
         setupFRC()
+        startLocationServices()
         super.loadView()
     }
 
@@ -79,12 +82,15 @@ class CitiesPageViewController: UIPageViewController {
         viewInitialSettings()
     }
 
+    private func startLocationServices() {
+        locationManager.startLocation()
+        locationManager.vcDelegate = self
+    }
+
     private func getLocationWeatherIfPossible() {
        let status = LocationManager.defaultManager.getPermissionStatus()
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
-            LocationManager.defaultManager.startLocation()
-            
             guard let location = LocationManager.defaultManager.getCLCoordinates() else { return }
             NetworkManager.defaultManager.geoRequest(location.longitude, location.latitude) { geoModel in
                 CoreDataManager.defaultManager.addCityWithWeatherData(geoModel: geoModel)
@@ -232,4 +238,11 @@ extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
         view.layoutIfNeeded()
     }
 
+}
+
+
+extension CitiesPageViewController: LocationManagerDelegate {
+    func didChangeAuthorizationAction() {
+        getLocationWeatherIfPossible()
+    }
 }
