@@ -231,8 +231,12 @@ extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
             guard let forecast3h = newCity.forecast3h else { return }
             guard let forecast1d = newCity.forecast1d else { return }
 
+            // если связи не пустые - обновляем экран
             if (forecast3h.count != 0) && (forecast1d.count != 0) {
                 updateAddedCities()
+            } else {
+                // если связи пустые - удалить обьект из CoreData
+                CoreDataManager.defaultManager.deleteCity(city: newCity)
             }
         }
 
