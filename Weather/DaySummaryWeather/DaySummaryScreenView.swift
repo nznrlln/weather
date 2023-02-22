@@ -354,7 +354,7 @@ extension DaySummaryScreenView: UITableViewDataSource {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 if let temp = delegate?.currentForecast?.feelsLikeTemperatureMax{
-                    cell.setupCell("thermometer", "По ощущениям", "\(temp)º")
+                    cell.setupCell("thermometer", "По ощущениям", "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: temp))")
                 }
             } else if indexPath.row == 1 {
                 if let velocity = delegate?.currentForecast?.windVelocity,
@@ -377,12 +377,12 @@ extension DaySummaryScreenView: UITableViewDataSource {
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
                 if let temp = delegate?.currentForecast?.feelsLikeTemperatureMin{
-                    cell.setupCell("thermometer", "По ощущениям", "\(temp)º")
+                    cell.setupCell("thermometer", "По ощущениям", "\(FormatHelper.defaultHelper.getLocalizedTemperature(from: temp))")
                 }
             } else if indexPath.row == 1 {
                 if let velocity = delegate?.currentForecast?.windVelocity,
                    let direction = delegate?.currentForecast?.windDirection {
-                    cell.setupCell("wind", "Ветер", "\(velocity) м/с \(direction)")
+                    cell.setupCell("wind", "Ветер", "\(FormatHelper.defaultHelper.getLocalizedVelocity(from: velocity)) \(direction)")
                 }
             } else if indexPath.row == 2 {
                 if let uv = delegate?.currentForecast?.uvIndex {

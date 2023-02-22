@@ -225,16 +225,17 @@ extension CitiesPageViewController: UIPageViewControllerDelegate {
 extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        updateAddedCities()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            if let newCity = anObject as? CityCoreData,
-               newCity.currentWeather != nil,
-               newCity.forecast3h != nil,
-               newCity.forecast1d != nil {
-                self?.updateAddedCities()
+        if let newCity = anObject as? CityCoreData {
+            guard let _ = newCity.currentWeather else { return }
+            guard let forecast3h = newCity.forecast3h else { return }
+            guard let forecast1d = newCity.forecast1d else { return }
+
+            if (forecast3h.count != 0) && (forecast1d.count != 0) {
+                updateAddedCities()
             }
         }
+
         view.layoutIfNeeded()
     }
 
