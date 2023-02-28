@@ -68,9 +68,7 @@ extension SettingsViewController: SettingsScreenViewDelegate {
         UserDefaultSettings.timeFormat = TimeFormat(rawValue: timeFormat) ?? .fullDay
         UserDefaultSettings.notificationStatus = NotificationStatus(rawValue: notifications) ?? .off
 
-        let alert = AlertHelper.defaultHelper.showSettingsAlert()
-        present(alert, animated: true)
-
         debugPrint("\(UserDefaultSettings.temperatureUnit), \(UserDefaultSettings.velocityUnit), \(UserDefaultSettings.timeFormat), \(UserDefaultSettings.notificationStatus)")
+        self.navigationController!.popViewController(animated: true)
     }
 }

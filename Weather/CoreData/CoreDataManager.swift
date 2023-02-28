@@ -212,17 +212,6 @@ class CoreDataManager {
         }
     }
 
-    func deleteCity(city: CityCoreData) {
-        persistentContainer.performBackgroundTask { taskContext in
-            taskContext.delete(city)
-            do {
-                try taskContext.save()
-            } catch {
-                debugPrint("🎲 Failed to delete city: \(error)")
-            }
-        }
-    }
-
     private func cityCheck(name: String) -> Bool {
         let request = CityCoreData.fetchRequest()
         let context = persistentContainer.viewContext

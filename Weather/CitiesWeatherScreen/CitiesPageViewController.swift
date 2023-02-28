@@ -217,7 +217,6 @@ extension CitiesPageViewController: UIPageViewControllerDataSource {
 // MARK: - UIPageViewControllerDelegate
 
 extension CitiesPageViewController: UIPageViewControllerDelegate {
-
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
@@ -234,10 +233,7 @@ extension CitiesPageViewController: NSFetchedResultsControllerDelegate {
             // если связи не пустые - обновляем экран
             if (forecast3h.count != 0) && (forecast1d.count != 0) {
                 updateAddedCities()
-            } else {
-                // если связи пустые - удалить обьект из CoreData
-                CoreDataManager.defaultManager.deleteCity(city: newCity)
-            }
+            } 
         }
 
         view.layoutIfNeeded()

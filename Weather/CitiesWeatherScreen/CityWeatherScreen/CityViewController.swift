@@ -145,6 +145,7 @@ class CityViewController: UIViewController {
 
         self.title = "\(currentCity.city ?? ""), \(currentCity.country ?? "")"
         self.navigationController!.navigationBar.topItem!.title = self.title
+        updateViews()
     }
 
     private func setupFRC() {
@@ -163,6 +164,12 @@ class CityViewController: UIViewController {
 
         setupSubviews()
         setupSubviewsLayout()
+    }
+
+    private func updateViews() {
+        dayView.setupView(model: currentCity.currentWeather ?? nil)
+        dayHoursCollectionView.reloadData()
+        daysTableView.reloadData()
     }
 
     private func setupSubviews() {

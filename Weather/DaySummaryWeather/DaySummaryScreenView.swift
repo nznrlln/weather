@@ -62,8 +62,6 @@ class DaySummaryScreenView: UIView {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.toAutoLayout()
         tableView.isScrollEnabled = false
-//        tableView.layer.cornerRadius = 5
-//        tableView.clipsToBounds = true
         tableView.backgroundColor = .white
         tableView.separatorColor = UIColor(named: "CustomBlue")
 
